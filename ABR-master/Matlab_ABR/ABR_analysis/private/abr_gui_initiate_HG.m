@@ -57,16 +57,16 @@ han.invert = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''invert'');',
 abr_FIG.push.nextPics = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''nextPics'');','style','pushbutton','Units','normalized','position',[0.3 0.32 0.02125 0.03],'string','Nxt');
 
 %P1-P5, N1-N5 push buttons
-abr_FIG.push.peak1 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak1'');','style','pushbutton','Units','normalized','position',[0.35 0.21 0.02125 0.03],'string','P(1)');
-abr_FIG.push.trou1 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou1'');','style','pushbutton','Units','normalized','position',[0.35 0.175 0.02125 0.03],'string','N(1)');
-abr_FIG.push.peak2 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak2'');','style','pushbutton','Units','normalized','position',[0.37625 0.21 0.02125 0.03],'string','P(2)');
-abr_FIG.push.trou2 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou2'');','style','pushbutton','Units','normalized','position',[0.37625 0.175 0.02125 0.03],'string','N(2)');
-abr_FIG.push.peak3 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak3'');','style','pushbutton','Units','normalized','position',[0.40125 0.21 0.02125 0.03],'string','P(3)');
-abr_FIG.push.trou3 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou3'');','style','pushbutton','Units','normalized','position',[0.40125 0.175 0.02125 0.03],'string','N(3)');
-abr_FIG.push.peak4 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak4'');','style','pushbutton','Units','normalized','position',[0.4275 0.21 0.02125 0.03],'string','P(4)');
-abr_FIG.push.trou4 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou4'');','style','pushbutton','Units','normalized','position',[0.4275 0.175 0.02125 0.03],'string','N(4)');
-abr_FIG.push.peak5 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak5'');','style','pushbutton','Units','normalized','position',[0.45 0.21 0.02125 0.03],'string','P(5)');
-abr_FIG.push.trou5 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou5'');','style','pushbutton','Units','normalized','position',[0.45 0.175 0.02125 0.03],'string','N(5)');
+abr_FIG.push.peak1 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak1'');','style','togglebutton','Units','normalized','position',[0.35 0.21 0.02125 0.03],'string','P(1)');
+abr_FIG.push.trou1 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou1'');','style','togglebutton','Units','normalized','position',[0.35 0.175 0.02125 0.03],'string','N(1)');
+abr_FIG.push.peak2 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak2'');','style','togglebutton','Units','normalized','position',[0.37625 0.21 0.02125 0.03],'string','P(2)');
+abr_FIG.push.trou2 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou2'');','style','togglebutton','Units','normalized','position',[0.37625 0.175 0.02125 0.03],'string','N(2)');
+abr_FIG.push.peak3 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak3'');','style','togglebutton','Units','normalized','position',[0.40125 0.21 0.02125 0.03],'string','P(3)');
+abr_FIG.push.trou3 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou3'');','style','togglebutton','Units','normalized','position',[0.40125 0.175 0.02125 0.03],'string','N(3)');
+abr_FIG.push.peak4 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak4'');','style','togglebutton','Units','normalized','position',[0.4275 0.21 0.02125 0.03],'string','P(4)');
+abr_FIG.push.trou4 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou4'');','style','togglebutton','Units','normalized','position',[0.4275 0.175 0.02125 0.03],'string','N(4)');
+abr_FIG.push.peak5 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak5'');','style','togglebutton','Units','normalized','position',[0.45 0.21 0.02125 0.03],'string','P(5)');
+abr_FIG.push.trou5 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''trou5'');','style','togglebutton','Units','normalized','position',[0.45 0.175 0.02125 0.03],'string','N(5)');
 
 %Autofind push button
 %abr_FIG.push.autofind = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''autofind'');','style','pushbutton','Units','normalized','position',[0.35 0.14 0.1 0.03],'string','AutoFind');
@@ -97,7 +97,7 @@ text(0.34,0.255,'Mark peaks:','Fontsize',10,'horizontalalignment','left','Vertic
 text(0.73,0.03,'Time (ms)','FontSize',12,'horizontalalignment','center','VerticalAlignment','middle','color','k')
 text(0.27,0.40,'dB SPL','FontSize',12,'horizontalalignment','center','VerticalAlignment','middle','color','k')
 text(0.5-0.02*0.33,0.94,'dB SPL','FontSize',10,'horizontalalignment','left','VerticalAlignment','middle','color','b')
-text(0.5+0.15*0.33,0.94,'(attn)','FontSize',10,'horizontalalignment','left','VerticalAlignment','middle','color','k')
+text(0.5+0.92*0.33,0.94,'(attn)','FontSize',10,'horizontalalignment','left','VerticalAlignment','middle','color','k')
 
 axes('Position',[0 0.07 0.35 0.4]);
 axis('off');
@@ -156,11 +156,11 @@ axes('Position',[0.86 0.07 0.1 0.86]);
 han.xcor_panel=gca;
 title('XCORR function','FontSize',14)
 
-axes('Position',[0.06 0.44 0.17 0.24]); 
+axes('Position',[0.06 0.44 0.17 0.22]); 
 han.amp_panel=gca;
 ylabel('P-P amplitude (uV)','FontSize',12)
 
-axes('Position',[0.06 0.69 0.17 0.24]); 
+axes('Position',[0.06 0.71 0.17 0.22]); 
 han.z_panel=gca;
 ylabel('Z score','FontSize',12)
 
