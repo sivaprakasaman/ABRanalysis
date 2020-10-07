@@ -5,7 +5,7 @@ function peak2(type,id)
 %In order to add in vertical line 3 ms after P1
 
 
-global abr_Stimuli num abr upper_y_bound lower_y_bound y_shift data abr_time abr padvoltage AR_marker
+global abr_Stimuli num abr upper_y_bound lower_y_bound y_shift data abr_time abr padvoltage AR_marker abr_FIG
 
 warning off;
 
@@ -319,7 +319,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
             exitwhile = 1;
             break;
         elseif contains(answer,'No')
-            answer4 = questdlg('Would you like to:','Next Step','User choose peak','Change cutoff','I dont know');
+            answer4 = questdlg('Would you like to:','Next Step','User choose peak','User manually enter peak','Change cutoff','I dont know');
             if contains(answer4,'Change cutoff')
                 %Option 1: Lower cutoff value
                 firstpart = strcat('The  current cutoff is',{' '},'+/-', num2str(cutoff(count,1)),'ms.');
@@ -345,6 +345,27 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
                     y11 = pks(numberPeak);
                     exitwhile = 1;
                 end
+            elseif contains(answer4, 'User manually enter peak')
+                firstpart3 = strcat('Enter peak time:');
+                prompt3 = strcat(firstpart3);
+                answer6 = inputdlg(prompt3,'Manual peak selection');
+                peakTime = str2double(cell2mat(answer6));
+                x11 = peakTime;
+                %yD = plot1.Ydata;
+                xdata=get(plot1,'Xdata');
+                ydata=get(plot1,'Ydata');
+                closest = 0;
+                mindiff = 100;
+                for c = 1:length(xdata)
+                    diff = abs(peakTime-xdata(c));
+                    if diff < mindiff
+                        mindiff = diff;
+                        closest = c;
+                    end
+                end
+                y11 = ydata(closest);
+                exitwhile = 1;
+                
             else
                 warndlg('Potential problem with code.');
             end
@@ -455,8 +476,18 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     %
 end
 
-%Call plot data function
+%Call plot data function and disable buttons
 stop=1;
+set(abr_FIG.push.peak1,'Value',0);
+set(abr_FIG.push.trou1,'Value',0);
+set(abr_FIG.push.peak2,'Value',0);
+set(abr_FIG.push.trou2,'Value',0);
+set(abr_FIG.push.peak3,'Value',0);
+set(abr_FIG.push.trou3,'Value',0);
+set(abr_FIG.push.peak4,'Value',0);
+set(abr_FIG.push.trou4,'Value',0);
+set(abr_FIG.push.peak5,'Value',0);
+set(abr_FIG.push.trou5,'Value',0);
 %AR_marker = 0;
 plot_data2(stop,vertLineMarker)
 end

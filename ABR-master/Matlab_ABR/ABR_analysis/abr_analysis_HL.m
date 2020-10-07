@@ -143,6 +143,30 @@ elseif strcmp(command_str,'nextPics')
         xxx = ABRfreqs(ParseInputPicString_V2(abr_Stimuli.abr_pic));
         xx = xxx(1:end-1); %Remove last pt which is next freq
         avgx = mean(xx); %all pts should have same value
+        set(abr_FIG.push.freq500,'Value',0);        
+        set(abr_FIG.push.freq1k,'Value',0);
+        set(abr_FIG.push.freq2k,'Value',0);
+        set(abr_FIG.push.freq4k,'Value',0);
+        set(abr_FIG.push.freq8k,'Value',0);
+        set(abr_FIG.push.freqClick,'Value',0);
+        if isequaln(freq,500)
+            set(abr_FIG.push.freq1k,'Value',1);
+        end
+        if isequaln(freq,1000)
+            set(abr_FIG.push.freq2k,'Value',1);
+        end
+        if isequaln(freq,2000)
+            set(abr_FIG.push.freq4k,'Value',1);
+        end
+        if isequaln(freq,4000)
+            set(abr_FIG.push.freq8k,'Value',1);
+        end
+        if isequaln(freq,8000)
+            set(abr_FIG.push.freqClick,'Value',1);
+        end
+        if isequaln(freq,0)
+            set(abr_FIG.push.freq500,'Value',1);
+        end
         if isequaln(avgx,xx(1))
             %Find next freq
 %             freqNOW1 = find(freqORDER==avgx);
@@ -387,6 +411,7 @@ elseif strcmp(command_str,'trou5')
         msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
+
     
 %elseif strcmp(command_str,'autofdind') %AUTOFIND FUNCTION HERE -- DOES NOTHING???
     %peak1af2;
@@ -514,6 +539,46 @@ elseif strcmp(command_str,'close') %NEED THIS? -HG
     closereq;
     cd(fileparts(abr_root_dir(1:end-1)));
     
-elseif strcmp(command_str,'freq_proc')
+elseif strcmp(command_str,'freq_proc500')
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
+    set(abr_FIG.push.freq1k,'Value',0);
+    set(abr_FIG.push.freq2k,'Value',0);
+    set(abr_FIG.push.freq4k,'Value',0);
+    set(abr_FIG.push.freq8k,'Value',0);
+    set(abr_FIG.push.freqClick,'Value',0);
+elseif strcmp(command_str,'freq_proc1k')
+    update_picnums_for_freqval(parm_num) %animal,hearingStatus);
+    set(abr_FIG.push.freq500,'Value',0);
+    set(abr_FIG.push.freq2k,'Value',0);
+    set(abr_FIG.push.freq4k,'Value',0);
+    set(abr_FIG.push.freq8k,'Value',0);
+    set(abr_FIG.push.freqClick,'Value',0);
+elseif strcmp(command_str,'freq_proc2k')
+    update_picnums_for_freqval(parm_num) %animal,hearingStatus);
+    set(abr_FIG.push.freq1k,'Value',0);
+    set(abr_FIG.push.freq500,'Value',0);
+    set(abr_FIG.push.freq4k,'Value',0);
+    set(abr_FIG.push.freq8k,'Value',0);
+    set(abr_FIG.push.freqClick,'Value',0);
+elseif strcmp(command_str,'freq_proc4k')
+    update_picnums_for_freqval(parm_num) %animal,hearingStatus);
+    set(abr_FIG.push.freq1k,'Value',0);
+    set(abr_FIG.push.freq2k,'Value',0);
+    set(abr_FIG.push.freq500,'Value',0);
+    set(abr_FIG.push.freq8k,'Value',0);
+    set(abr_FIG.push.freqClick,'Value',0);
+elseif strcmp(command_str,'freq_proc8k')
+    update_picnums_for_freqval(parm_num) %animal,hearingStatus);
+    set(abr_FIG.push.freq1k,'Value',0);
+    set(abr_FIG.push.freq2k,'Value',0);
+    set(abr_FIG.push.freq4k,'Value',0);
+    set(abr_FIG.push.freq500,'Value',0);
+    set(abr_FIG.push.freqClick,'Value',0);
+elseif strcmp(command_str,'freq_procClick')
+    update_picnums_for_freqval(parm_num) %animal,hearingStatus);
+    set(abr_FIG.push.freq1k,'Value',0);
+    set(abr_FIG.push.freq2k,'Value',0);
+    set(abr_FIG.push.freq4k,'Value',0);
+    set(abr_FIG.push.freq8k,'Value',0);
+    set(abr_FIG.push.freq500,'Value',0);
 end
