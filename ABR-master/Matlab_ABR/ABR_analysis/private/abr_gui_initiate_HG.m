@@ -41,6 +41,9 @@ han.change_weights = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''chan
 %Average waves checkbox
 %han.cbh2 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''cbh2'');','style','checkbox','Units','normalized','position',[0.35 .35 0.1 .03],'String','Average waves','Value',0,'BackgroundColor','w');
 
+%Load previous ABR peaks push button
+abr_FIG.push.peaks = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peaks'');','style','pushbutton','Units','normalized','position',[0.35 .355 0.12 .03],'string','Load Previous Peaks');
+
 %Load ABR files push button
 abr_FIG.push.process = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''process'');','style','pushbutton','Units','normalized','position',[0.35 .32 0.1 .03],'string','Load ABR files');
 

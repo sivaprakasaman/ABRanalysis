@@ -270,6 +270,12 @@ elseif strcmp(command_str,'directory')
         set(han.abr_panel,'Box','on');
     end
     
+elseif strcmp(command_str,'peaks')
+    replot_data;
+    set(han.peak_panel,'Box','on');
+    set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
+
+    
 elseif strcmp(command_str,'process')
     zzz2;
     set(han.peak_panel,'Box','on');

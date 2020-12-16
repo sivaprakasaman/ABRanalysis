@@ -3,7 +3,7 @@
    %STILL NEED TO INPUT stop and vertLineMarker
 
     global 	data han spl attn line_width abr_Stimuli abr_time abr w upper_y_bound lower_y_bound y_shift padvoltage num thresh_mag reff AVG_reff freq ...
-        include_spl include_zscore include_w %abr_AR AR_marker plot_AR
+        include_spl include_zscore include_w replot %abr_AR AR_marker plot_AR
 
 
     %Clear out abr_AR if AR button NOT PRESSED
@@ -166,19 +166,43 @@
         for i=1:num
             plot(abr_time,abr(:,i)+y_shift(1,i),'-k',[abr_Stimuli.start abr_Stimuli.end],[upper_y_bound(1,i) upper_y_bound(1,i)],'-k',...
                 'LineWidth',line_width)
+            
+            if ~isempty(replot) 
+                
+                ax = gca;
+                colors2 = {'r','r','b','b','m','m','g','g','c','c'};
+                for j=1:10
+                    reX = replot.abrs.x(i,j+2);
+                    reY = replot.abrs.y(i,j+2) + y_shift(1,i);
+                    colorPT = strcat(colors2{j},'*');
+                    plot(ax, reX, reY, colorPT);
+                     if (mod(j,2)==1) %PEAK - place above peak
+                        name = strcat('P',num2str((j+1)/2)); 
+                        text(ax,reX,reY,name,'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',8,'Color',colors2{j});
+                     else %TROUGH
+                        name = strcat('N',num2str((j)/2)); 
+                        text(ax,reX,reY,name,'HorizontalAlignment','center','VerticalAlignment','top','fontsize',8,'Color',colors2{j});
+                     end
+                         
+                end
+            end
+            %If ABR's exist, plot all peaks and troughs that exist
             text(abr_Stimuli.start+(abr_Stimuli.end-abr_Stimuli.start)*0.01,upper_y_bound(1,i)-0.5*padvoltage,num2str(spl(i),'%10.1f'),...
                 'fontsize',10,'horizontalalignment','left','VerticalAlignment','middle','color','b')
             text(abr_Stimuli.start+(abr_Stimuli.end-abr_Stimuli.start)*0.15 + 15.2,upper_y_bound(1,i)-0.5*padvoltage,...
                 ['(' num2str(-attn(i),'%10.1f') ')'],'fontsize',10,'horizontalalignment','left','VerticalAlignment','middle','color','k')
             %HG ADDED 2/6/20
             %Add in dotted vertical line 3 ms after W1
-            if ~(vertLineMarker == 0)
-                milliseconds = 3;
-                msTime = vertLineMarker + milliseconds;
-                [d, ix] = min(abs(abr_time - msTime));
-                line([abr_time(ix), abr_time(ix)],get(gca, 'ylim'),'Color','red','LineStyle','-.');
-                %xline(abr_time(ix),'r-.');
+            if exist('vertLineMarker')
+                if ~(vertLineMarker == 0)
+                    milliseconds = 3;
+                    msTime = vertLineMarker + milliseconds;
+                    [d, ix] = min(abs(abr_time - msTime));
+                    line([abr_time(ix), abr_time(ix)],get(gca, 'ylim'),'Color','red','LineStyle','-.');
+                    %xline(abr_time(ix),'r-.');
+                end
             end
+        
 
             %HG ADDED 12/2/19
             %UNCOMMENT for including reference dataset

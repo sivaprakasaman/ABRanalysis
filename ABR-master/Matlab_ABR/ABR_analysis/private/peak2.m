@@ -434,7 +434,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
             %Plots optimized peak
             %plot(ax,x11,plot_yy,'rx');
             colorPT = strcat(colors2{id},'x');
-            plot(ax,x11,plot_yy,colorPT);
+            plot(ax,x11,plot_yy,colorPT); %line that plots point, needs axes, x coord, y coord, and color.
             %Labels Peak/Trough on waterfall
             %xloc = x11*0.75;
             backtrack_ms = 1;
