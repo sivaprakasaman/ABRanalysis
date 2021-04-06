@@ -222,13 +222,34 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
         %First, check to make sure peaks exist at all
         if (length(pks) < 1) 
             %CH made error box more interactive
-            answer6 = questdlg('Error! No peaks found. Would you like to repeat?',...
-                'Error', 'Repeat', 'Exit', 'I dont know');
+            answer6 = questdlg('No peaks found. Would you like to repeat?',...
+                'No peaks found', 'Repeat', 'Exit', 'Manually enter peak', 'I dont know');
             answer = {answer6};
             if contains(answer, 'Repeat')
                 stop2 = 1; %allows code to go back to main while loop
                 close(hfig);
                 break;
+            elseif contains(answer, 'Manually enter peak')
+                firstpart3 = strcat('Enter peak time:');
+                prompt3 = strcat(firstpart3);
+                answer6 = inputdlg(prompt3,'Manual peak selection');
+                peakTime = str2double(cell2mat(answer6));
+                x11 = peakTime;
+                %yD = plot1.Ydata;
+                xdata=get(plot1,'Xdata');
+                ydata=get(plot1,'Ydata');
+                closest = 0;
+                mindiff = 100;
+                for c = 1:length(xdata)
+                    diff = abs(peakTime-xdata(c));
+                    if diff < mindiff
+                        mindiff = diff;
+                        closest = c;
+                    end
+                end
+                y11 = ydata(closest);
+                exitwhile = 1;
+                
             else
                 close(hfig);
                 stop2 = 1;
@@ -319,7 +340,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
             exitwhile = 1;
             break;
         elseif contains(answer,'No')
-            answer4 = questdlg('Would you like to:','Next Step','User choose peak','User manually enter peak','Change cutoff','I dont know');
+            answer4 = questdlg('Would you like to:','Next Step','User choose peak','Change cutoff','Cancel','I dont know');
             if contains(answer4,'Change cutoff')
                 %Option 1: Lower cutoff value
                 firstpart = strcat('The  current cutoff is',{' '},'+/-', num2str(cutoff(count,1)),'ms.');
@@ -330,42 +351,52 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
                 exitwhile = 0;
             elseif contains(answer4, 'User choose peak')
                 %First number peaks from left to right
-                for ww = 1:length(pks)
-                    xloc2 = time_loc(count,ww);
-                    yloc2 = pks(ww)+0.05;
-                    text(ax3,xloc2,yloc2,num2str(ww));
-                end
-                %User inputs peak number
-                firstpart2 = strcat('What point do you want to choose as the peak?');%{' '},'Insert',{' '},num2str(cutoff(count,1)),{'-'},num2str());
-                prompt2 = strcat(firstpart2);
-                answer5 = inputdlg(prompt2,'Choose peak');
-                numberPeak = str2num(cell2mat(answer5));
-                if (numberPeak <= length(pks)) %inputted peak must be one of the peaks 
-                	x11 = time_loc(count,numberPeak);
-                    y11 = pks(numberPeak);
-                    exitwhile = 1;
-                end
-            elseif contains(answer4, 'User manually enter peak')
-                firstpart3 = strcat('Enter peak time:');
-                prompt3 = strcat(firstpart3);
-                answer6 = inputdlg(prompt3,'Manual peak selection');
-                peakTime = str2double(cell2mat(answer6));
-                x11 = peakTime;
-                %yD = plot1.Ydata;
-                xdata=get(plot1,'Xdata');
-                ydata=get(plot1,'Ydata');
-                closest = 0;
-                mindiff = 100;
-                for c = 1:length(xdata)
-                    diff = abs(peakTime-xdata(c));
-                    if diff < mindiff
-                        mindiff = diff;
-                        closest = c;
+                answer7 = questdlg('Would you like to:','Peak Selection Type','Pick preset peak','Manually enter peak','Cancel','I dont know');
+                if contains(answer7,'Pick preset peak')
+                    for ww = 1:length(pks)
+                        xloc2 = time_loc(count,ww);
+                        yloc2 = pks(ww)+0.05;
+                        text(ax3,xloc2,yloc2,num2str(ww));
                     end
+                    %User inputs peak number
+                    firstpart2 = strcat('What point do you want to choose as the peak?');%{' '},'Insert',{' '},num2str(cutoff(count,1)),{'-'},num2str());
+                    prompt2 = strcat(firstpart2);
+                    answer5 = inputdlg(prompt2,'Choose peak');
+                    numberPeak = str2num(cell2mat(answer5));
+                    if (numberPeak <= length(pks)) %inputted peak must be one of the peaks 
+                        x11 = time_loc(count,numberPeak);
+                        y11 = pks(numberPeak);
+                        exitwhile = 1;
+                    end
+                elseif contains(answer7, 'Manually enter peak')
+                    firstpart3 = strcat('Enter peak time:');
+                    prompt3 = strcat(firstpart3);
+                    answer6 = inputdlg(prompt3,'Manual peak selection');
+                    peakTime = str2double(cell2mat(answer6));
+                    x11 = peakTime;
+                    %yD = plot1.Ydata;
+                    xdata=get(plot1,'Xdata');
+                    ydata=get(plot1,'Ydata');
+                    closest = 0;
+                    mindiff = 100;
+                    for c = 1:length(xdata)
+                        diff = abs(peakTime-xdata(c));
+                        if diff < mindiff
+                            mindiff = diff;
+                            closest = c;
+                        end
+                    end
+                    y11 = ydata(closest);
+                    exitwhile = 1;
+                elseif contains(answer7, 'Cancel')
+                    stop2 = 1; %allows code to go back to main while loop
+                    close(hfig);
+                    break;
                 end
-                y11 = ydata(closest);
-                exitwhile = 1;
-                
+            elseif contains(answer4, 'Cancel')
+                stop2 = 1; %allows code to go back to main while loop
+                close(hfig);
+                break;
             else
                 warndlg('Potential problem with code.');
             end

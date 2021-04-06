@@ -64,6 +64,7 @@ elseif strcmp(command_str,'stimulus')
     end
  
 elseif strcmp(command_str,'nextPics')
+    clear global 'replot';
     
     %HERE!!
     
@@ -246,12 +247,18 @@ elseif strcmp(command_str,'nextPics')
     set(abr_FIG.parm_txt(2),'string',upper(new_value));
     abr_Stimuli.abr_pic = new_value;
     
+    clear global 'replot'
     zzz2;
     set(han.peak_panel,'Box','on');
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
 elseif strcmp(command_str,'directory')
     abr_Stimuli.dir = get_directory;
+    %TODO JB: Find inactive freqs and disable inactive freq buttons
+    TEMPdir=dir('*2000.m');
+    if isempty(TEMPdir)
+        set(abr_FIG.push.freq2k,'Enable','off');
+    end
     set(han.abr_panel,'Box','off');
     set(han.peak_panel,'Box','off');
     set(abr_FIG.dir_txt,'string',abr_Stimuli.dir);
@@ -277,6 +284,7 @@ elseif strcmp(command_str,'peaks')
 
     
 elseif strcmp(command_str,'process')
+    clear global 'replot'
     zzz2;
     set(han.peak_panel,'Box','on');
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
@@ -328,6 +336,7 @@ elseif strcmp(command_str,'cbh2')
     
 elseif strcmp(command_str,'invert')
     invert=get(han.invert,'Value');
+    clear global 'replot'
     zzz2;
     
 elseif strcmp(command_str,'change_weights')
@@ -546,6 +555,7 @@ elseif strcmp(command_str,'close') %NEED THIS? -HG
     cd(fileparts(abr_root_dir(1:end-1)));
     
 elseif strcmp(command_str,'freq_proc500')
+    clear global 'replot';
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -553,6 +563,7 @@ elseif strcmp(command_str,'freq_proc500')
     set(abr_FIG.push.freq8k,'Value',0);
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc1k')
+    clear global 'replot';
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq500,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -560,6 +571,7 @@ elseif strcmp(command_str,'freq_proc1k')
     set(abr_FIG.push.freq8k,'Value',0);
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc2k')
+    clear global 'replot';
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq500,'Value',0);
@@ -567,6 +579,7 @@ elseif strcmp(command_str,'freq_proc2k')
     set(abr_FIG.push.freq8k,'Value',0);
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc4k')
+    clear global 'replot';
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -574,6 +587,7 @@ elseif strcmp(command_str,'freq_proc4k')
     set(abr_FIG.push.freq8k,'Value',0);
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc8k')
+    clear global 'replot';
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -581,6 +595,7 @@ elseif strcmp(command_str,'freq_proc8k')
     set(abr_FIG.push.freq500,'Value',0);
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_procClick')
+    clear global 'replot';
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);

@@ -3,7 +3,6 @@ function replot_data
 global 	abr_out_dir freq replot animal abr_Stimuli 
 
 
-
 q_fldr = strcat('Q', num2str(animal));
 if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
     type = 'pre';
@@ -20,8 +19,8 @@ for i = 1:length(x)
         fldr = x(i).name;
     end
 end
-d = dir([strcat(ChinDir, fldr)]);
-d = d(find((strncmp('.',{d.name},1)==0)); % Only files which are not '.' nor '..'
+d = dir(fullfile(strcat(ChinDir, fldr), '*.mat'));
+d = d(find((strncmp('.',{d.name},1)==0))); % Only files which are not '.' nor '..'
 str = {d.name};
 [selection ok] = listdlg('Name', 'File Manager', ...
     'PromptString',   'Select data to replot',...
@@ -44,8 +43,8 @@ else
 		replot.abrs.x(replot.abrs.x(:,1)~=freq,:)=[];                      
 		replot.abrs.y(replot.abrs.y(:,1)~=freq,:)=[];                     
 		replot.abrs.waves(replot.abrs.waves(:,1)~=freq,:)=[];
+        zzz2;
 	else
 		msgbox('Unable to replot incompatible data')
     end
-	
 end
