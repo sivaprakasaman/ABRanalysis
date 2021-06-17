@@ -1,6 +1,6 @@
 function abr_artifact_rejection()
 
-global 	dataFolderpath abr_out_dir han dimcheck
+global 	dataFolderpath abr_out_dir han dimcheck freqUsed
 
 warning('off');
 
@@ -43,8 +43,10 @@ for i = 1:length(a_files_all)
     end
 end
 
-%ASSUMPTION: assuming only looking at 6 freq for now
-freq = [NaN 500 1000 2000 4000 8000];
+%Set freqs
+freq = freqUsed;
+            
+%freq = [NaN 500 1000 2000 4000 8000];
 
 %ASSUMPTION: assuming max of 15 levels tested for array purposes
 max_levels = 15;
@@ -130,7 +132,7 @@ for i = 1:len_freq
     meanLevels(i,:) = mean(levelstoAvg,1);
     
     %Pop-up figure for sanity check WITH SUBPLOTS
-    subplot(length(freq)/2,2,i)
+    subplot(3,2,i)
     freq_string = num2str(freq(i));
     if contains(freq_string,'NaN') %for click
         freq_string = 'Click';
