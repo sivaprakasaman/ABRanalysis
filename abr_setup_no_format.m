@@ -18,10 +18,15 @@ if (ismac == 1) %Use if using a MAC
     
     
 else %Use if using Windows/Linux
-    addpath(genpath('Add code directory')) %ENTER the path of the directory containing your 'ABRAnalysis' folder
-    addpath(genpath('Add project directory')) %ENTER the path of the directory containing your project folder
-    code_DIR='Add code directory'; %ENTER the path of your 'ABRAnalysis' folder
-    project_DIR='Add project directory'; %ENTER the path of your project folder
+    addpath(genpath('Z:\Projects\Ivy_Andrew_CARBOvTTS\Code_Archive\ABRanalysis-master')) %ENTER the path of the directory containing your 'ABRAnalysis' folder
+    addpath(genpath('Z:\Projects\Ivy_Andrew_CARBOvTTS\Data')) %ENTER the path of the directory containing your project folder
+    code_DIR='Z:\Projects\Ivy_Andrew_CARBOvTTS\Code_Archive\ABRanalysis-master\'; %ENTER the path of your 'ABRAnalysis' folder
+    project_DIR='Z:\Projects\Ivy_Andrew_CARBOvTTS\Data'; %ENTER the path of your project folder
+
+%     addpath(genpath('C:\Users\ischwein\Desktop\For_Purdue_Labs\Heinz_LabData\Code_Archive\ABRanalysis-master')) %ENTER the path of the directory containing your 'ABRAnalysis' folder
+%     addpath(genpath('C:\Users\ischwein\Desktop\For_Purdue_Labs\Heinz_LabData\Data')) %ENTER the path of the directory containing your project folder
+%     code_DIR='C:\Users\ischwein\Desktop\For_Purdue_Labs\Heinz_LabData\Code_Archive\ABRanalysis-master\ABR-master'; %ENTER the path of your 'ABRAnalysis' folder
+%     project_DIR='C:\Users\ischwein\Desktop\For_Purdue_Labs\Heinz_LabData\Data'; %ENTER the path of your project folder
 
     abr_root_dir = [code_DIR 'ABR-master\Matlab_ABR\'];
     
