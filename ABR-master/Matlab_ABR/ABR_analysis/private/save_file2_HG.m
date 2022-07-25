@@ -20,6 +20,8 @@ if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
     type = 'pre';
 elseif strcmp('post',regexp(abr_Stimuli.dir,'post','match')) == 1
     type = 'post';
+else
+    type = 'temp';
 end
 ChinDir = strcat(abr_out_dir, q_fldr, filesep, type, filesep);
 
@@ -32,6 +34,8 @@ x = dir;
 for i = 1:length(x)
     if (~contains(x(i).name,'.'))&&(~contains(x(i).name,'.DS_Store','IgnoreCase',true))
         fldr = x(i).name;
+    else
+        fldr = 'temp';
     end
 end
 currChinDir = strcat(ChinDir, fldr);
