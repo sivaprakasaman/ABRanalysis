@@ -1,6 +1,9 @@
 %% Read in the ABR waveforms
 function load_abr_data
 
+%JB: Remove this after crashes are fixed
+dbstop if error
+
 global abr_Stimuli abr_data_dir	num dt line_width abr freq attn spl date data freq_level ...
     abr_time ABRmag invert noise_local dataFolderpath viewraw dimcheck
 
@@ -40,9 +43,9 @@ freqs=NaN*ones(1,num);
 attn=NaN*ones(1,num);
 %HG ADDED 2/26/20
 if viewraw == 0 %AC corrected data
-    hhh=dir(sprintf('a%04d*',pic(1)));
+    hhh=dir(sprintf('a%04d*.m',pic(1)));
 else %RAW data
-    hhh=dir(sprintf('araw%04d*',pic(1)));
+    hhh=dir(sprintf('araw%04d*.m',pic(1)));
 end
 %Make sure you are looking at a file, NOT ARAW file
 if (contains(hhh.name,'araw') && (viewraw == 0))
@@ -51,9 +54,9 @@ end
 if exist(hhh.name,'file') && ~isempty(hhh)
     for i=1:num
         if viewraw == 0 %AC corrected data
-            fname=dir(sprintf('a%04d*',pic(i)));
+            fname=dir(sprintf('a%04d*.m',pic(i)));
         else %RAW data
-            fname=dir(sprintf('araw%04d*',pic(i)));
+            fname=dir(sprintf('araw%04d*.m',pic(i)));
         end
         filename=fname.name(1:end-2);
         eval(['x=' filename ';'])
@@ -63,6 +66,16 @@ if exist(hhh.name,'file') && ~isempty(hhh)
             freqs(1,i)=0; % means click
         end
         attn(1,i)=-x.Stimuli.atten_dB;
+
+        if (isa(x.AD_Data.AD_Avg_V, 'double') == 0)
+            if (isa(x.AD_Data.AD_Avg_V{1}, 'double') == 0)
+                abr(:,i)=x.AD_Data.AD_Avg_V{1}{1}'-mean(x.AD_Data.AD_Avg_V{1}{1});
+            else
+                abr(:,i)=x.AD_Data.AD_Avg_V{1}'-mean(x.AD_Data.AD_Avg_V{1});
+            end
+        else
+            abr(:,i)=x.AD_Data.AD_Avg_V'-mean(x.AD_Data.AD_Avg_V); % removes DC offset
+        end
                 %this is a really stupid temporary fix, but have to verify
         %xx.AD_Data is sampled correctly
         fs_needed = round(48828.125);

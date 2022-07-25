@@ -65,14 +65,14 @@ end
 ExpDir = dataFolderpath;
 cd(ExpDir);
 if freq_val_kHz~=0
-    allfiles=dir(['a*ABR*' num2str(round(freq_val_kHz*1e3)) '*']);
+    allfiles=dir(['a*ABR*' num2str(round(freq_val_kHz*1e3)) '*.m']);
     if isempty(allfiles)
-        allfiles=dir(['p*ABR*' num2str(round(freq_val_kHz*1e3)) '*']);
+        allfiles=dir(['p*ABR*' num2str(round(freq_val_kHz*1e3)) '*.m']);
     end
 elseif freq_val_kHz==0
-    allfiles=dir('a*ABR*click*');
+    allfiles=dir('a*ABR*click*.m');
     if isempty(allfiles)
-        allfiles=dir('p*ABR*click*');
+        allfiles=dir('p*ABR*click*.m');
     end
 end
 
