@@ -29,13 +29,13 @@ end
 cd(ChinDir)
 
 x = dir;
-for i = 1:length(x)
-    if (~contains(x(i).name,'.'))&&(~contains(x(i).name,'.DS_Store','IgnoreCase',true))
-        fldr = x(i).name;
-    end
-end
-currChinDir = strcat(ChinDir, fldr);
-cd(currChinDir)
+% for i = 1:length(x)
+%     if (~contains(x(i).name,'.'))&&(~contains(x(i).name,'.DS_Store','IgnoreCase',true))
+%         fldr = x(i).name;
+%     end
+% end
+% currChinDir = strcat(ChinDir, fldr);
+% cd(currChinDir)
 
 if ~isempty(filename)
     %filename2 = char(strcat(curChinDir,filename,'.mat'));

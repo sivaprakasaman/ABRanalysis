@@ -34,6 +34,14 @@ if exist(hhh.name,'file') && ~isempty(hhh)
         end
         %freqs(1,i)=x.Stimuli.freq_hz;
         attn(1,i)=-x.Stimuli.atten_dB;
+        
+        %AS
+        %this is a really stupid temporary fix, but have to verify
+        %xx.AD_Data is sampled correctly
+        fs_needed = round(48828.125);
+        fs_curr = round(x.AD_Data.SampleRate);
+        x.AD_Data.AD_Avg_V = resample(x.AD_Data.AD_Avg_V,fs_needed,fs_curr);
+        
         abr(:,i)=x.AD_Data.AD_Avg_V(1:end-1)'-mean(x.AD_Data.AD_Avg_V(1:end-1)); % removes DC offset
         
     end
@@ -49,6 +57,7 @@ else %WHEN DOES IT  GO INTO HERE?
             freqs(1,i)=NaN;
         end
         %freqs(1,i)=x.Stimuli.freq_hz;
+        
         attn(1,i)=-x.Stimuli.atten_dB;
         if iscell(x.AD_Data.AD_Avg_V)
             abr(:,i)=(x.AD_Data.AD_Avg_V{1}(1:end-1)-mean(x.AD_Data.AD_Avg_V{1}(1:end-1)))'; % removes DC offset
