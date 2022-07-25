@@ -32,8 +32,16 @@ for freq_var=1:length(AllFreq)
             if iscell(xx.AD_Data.AD_Avg_V)
                 xx.AD_Data.AD_Avg_V=xx.AD_Data.AD_Avg_V{1};
             end
+            
+            %this is a really stupid temporary fix, but have to verify
+            %xx.AD_Data is sampled correctly
+            fs_needed = round(48828.125);
+            fs_curr = round(xx.AD_Data.SampleRate);
+            xx.AD_Data.AD_Avg_V = resample(xx.AD_Data.AD_Avg_V,fs_needed,fs_curr);
+            
             temp_snippet1=xx.AD_Data.AD_Avg_V(1:round(xx.Stimuli.RPsamprate_Hz*StimStart));
             temp_snippet2=xx.AD_Data.AD_Avg_V(round(xx.Stimuli.RPsamprate_Hz*StimEnd1):round(xx.Stimuli.RPsamprate_Hz*StimEnd2));
+            
             temp_snippet=[temp_snippet1 temp_snippet2];
             temp_snippet=temp_snippet-mean(temp_snippet);
             NoiseVector=[NoiseVector,temp_snippet]; %#ok<AGROW>
