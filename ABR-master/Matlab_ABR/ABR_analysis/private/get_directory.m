@@ -107,7 +107,7 @@ else
 end
 
 %% Now go back and find dirname
-if (formatCorrect == true)
+if (formatCorrect == 1)
     %First determine animal number
     Qlocation_start = strfind(dirname,'Q');
 
@@ -117,7 +117,9 @@ if (formatCorrect == true)
 
     Qfolders_pwd = pwd;
     cd(Qnumber);
-
+    %cd('Q403');
+    %cd('dummy');
+    
     %Run through both pre and post folders to find folder of Interest
     marker = 0;
     for num3 = 1:2
@@ -165,7 +167,9 @@ if (formatCorrect == true)
                             %if exist(dirname)
                             %Load data from here!!!!
                             %fprintf('DATA FOUND\n');
-                            cd(dirname);
+                             marker = 1;
+                             cd(dirname);
+                             dataFolderpath = pwd;
                             break; %exit loops because location was found
                         end
                     end
@@ -182,13 +186,12 @@ end
 %% Go back to data directory to: 1) check for extra calibs, 2) do artifact correction
 cd(dataFolderpath)
         
-%% Warn if more than one calib file, if so list pics
-calibPICs=findPics('calib');
-if length(calibPICs)>1
-	beep
-	mydlg=warndlg(sprintf('more than 1 CALIB file (PICS: %s) - CLARIFY: *** Be sure to pick correct one',num2str(calibPICs)),'modal');
-	waitfor(mydlg)
-end
+%% Warn if more than one calib file, if so list pics (Commented out 10/5/21 due to missing findPics, will comment back later)
+%if length(calibPICs)>1
+	%beep
+%	mydlg=warndlg(sprintf('more than 1 CALIB file (PICS: %s) - CLARIFY: *** Be sure to pick correct one',num2str(calibPICs)),'modal');
+%	waitfor(mydlg)
+%end
 % Determine which freqs are present in the data
 % If freq is present, it is added to freqUsed
 freqUsed = [];
