@@ -35,9 +35,12 @@ for freq_var=1:length(AllFreq)
             
             %this is a really stupid temporary fix, but have to verify
             %xx.AD_Data is sampled correctly
-            fs_needed = round(48828.125);
-            fs_curr = round(xx.AD_Data.SampleRate);
-            xx.AD_Data.AD_Avg_V = resample(xx.AD_Data.AD_Avg_V,fs_needed,fs_curr);
+                
+            if isfield(xx.AD_Data, 'SampleRate')    
+                fs_needed = round(48828.125);
+                fs_curr = round(xx.AD_Data.SampleRate);
+                xx.AD_Data.AD_Avg_V = resample(xx.AD_Data.AD_Avg_V,fs_needed,fs_curr);
+            end
             
             temp_snippet1=xx.AD_Data.AD_Avg_V(1:round(xx.Stimuli.RPsamprate_Hz*StimStart));
             temp_snippet2=xx.AD_Data.AD_Avg_V(round(xx.Stimuli.RPsamprate_Hz*StimEnd1):round(xx.Stimuli.RPsamprate_Hz*StimEnd2));
