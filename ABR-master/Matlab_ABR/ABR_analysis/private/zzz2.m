@@ -20,10 +20,10 @@ cd(ExpDir);
 abr=[]; 
 freqs=NaN*ones(1,num); 
 attn=NaN*ones(1,num);
-hhh=dir(sprintf('a%04d*',pic(1)));
+hhh=dir(sprintf('a%04d*.m',pic(1)));
 if exist(hhh.name,'file') && ~isempty(hhh)
     for i=1:num
-        fname=dir(sprintf('a%04d*',pic(i)));
+        fname=dir(sprintf('a%04d*.m',pic(i)));
         filename=fname.name(1:end-2);
         eval(['x=' filename ';'])
         %HG edited 10/24/19 -- all click freqs should be NaN, not 1000Hz
@@ -40,14 +40,23 @@ if exist(hhh.name,'file') && ~isempty(hhh)
         %xx.AD_Data is sampled correctly
         fs_needed = round(48828.125);
         fs_curr = round(x.AD_Data.SampleRate);
-        x.AD_Data.AD_Avg_V = resample(x.AD_Data.AD_Avg_V,fs_needed,fs_curr);
-        
-        abr(:,i)=x.AD_Data.AD_Avg_V(1:end-1)'-mean(x.AD_Data.AD_Avg_V(1:end-1)); % removes DC offset
+        if (isa(x.AD_Data.AD_Avg_V, 'double') == 0)
+            if (isa(x.AD_Data.AD_Avg_V{1}, 'double') == 0)
+                x.AD_Data.AD_Avg_V{1}{1} = resample(x.AD_Data.AD_Avg_V{1}{1},fs_needed,fs_curr);
+                abr(:,i)=x.AD_Data.AD_Avg_V{1}{1}(1:end-1)'-mean(x.AD_Data.AD_Avg_V{1}{1}(1:end-1)); % removes DC offset
+            else
+                x.AD_Data.AD_Avg_V{1} = resample(x.AD_Data.AD_Avg_V{1},fs_needed,fs_curr);
+                abr(:,i)=x.AD_Data.AD_Avg_V{1}(1:end-1)'-mean(x.AD_Data.AD_Avg_V{1}(1:end-1)); % removes DC offset
+            end
+        else
+            x.AD_Data.AD_Avg_V = resample(x.AD_Data.AD_Avg_V,fs_needed,fs_curr);
+            abr(:,i)=x.AD_Data.AD_Avg_V(1:end-1)'-mean(x.AD_Data.AD_Avg_V(1:end-1)); % removes DC offset
+        end
         
     end
 else %WHEN DOES IT  GO INTO HERE?
     for i=1:num
-        fname=dir(sprintf('p%04d*',pic(i)));
+        fname=dir(sprintf('p%04d*.m',pic(i)));
         filename=fname.name(1:end-2);
         eval(['x=' filename ';'])
         %HG edited 10/24/19 -- all click freqs should be NaN, not 1000Hz

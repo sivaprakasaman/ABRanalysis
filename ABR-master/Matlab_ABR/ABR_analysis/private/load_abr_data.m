@@ -80,8 +80,18 @@ if exist(hhh.name,'file') && ~isempty(hhh)
         %xx.AD_Data is sampled correctly
         fs_needed = round(48828.125);
         fs_curr = round(x.AD_Data.SampleRate);
-        x.AD_Data.AD_Avg_V = resample(x.AD_Data.AD_Avg_V,fs_needed,fs_curr);
-        abr(:,i)=x.AD_Data.AD_Avg_V'-mean(x.AD_Data.AD_Avg_V); % removes DC offset
+        if (isa(x.AD_Data.AD_Avg_V, 'double') == 0)
+            if (isa(x.AD_Data.AD_Avg_V{1}, 'double') == 0)
+                x.AD_Data.AD_Avg_V{1}{1} = resample(x.AD_Data.AD_Avg_V{1}{1},fs_needed,fs_curr);
+                abr(:,i)=x.AD_Data.AD_Avg_V{1}{1}'-mean(x.AD_Data.AD_Avg_V{1}{1}); % removes DC offset
+            else
+                x.AD_Data.AD_Avg_V{1} = resample(x.AD_Data.AD_Avg_V{1},fs_needed,fs_curr);
+                abr(:,i)=x.AD_Data.AD_Avg_V{1}'-mean(x.AD_Data.AD_Avg_V{1}); % removes DC offset
+            end
+        else
+            x.AD_Data.AD_Avg_V = resample(x.AD_Data.AD_Avg_V,fs_needed,fs_curr);
+            abr(:,i)=x.AD_Data.AD_Avg_V'-mean(x.AD_Data.AD_Avg_V); % removes DC offset
+        end
         if abr(end,i)>max(abr(1:end-1,i)) % Weird DC except at last point. Remove DC, remove last point, again remove new DC.
             abr(end,i)=0;
             abr(:,i)=abr(:,i)-mean(abr(:,i));
