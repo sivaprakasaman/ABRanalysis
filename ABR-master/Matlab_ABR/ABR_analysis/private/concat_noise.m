@@ -3,7 +3,7 @@ function NoiseVector=concat_noise(DataDir)
 %%
 % DataDir=[pwd '\NELData\SP-2016_07_04-Q265-Baseline\'];
 CurDir=pwd;
-AllFreq=[0.5 1 2 4 8]*1e3;
+AllFreq=["500" "1000" "2000" "4000" "8000" "click"]
 addpath(pwd);
 
 %%

@@ -3,7 +3,7 @@
 
 function zzz5
 %% Initialize
-global  ThreshTypeCorrCovDist noise_local
+global  ThreshTypeCorrCovDist
 
 ThreshTypeCorrCovDist=1;
 

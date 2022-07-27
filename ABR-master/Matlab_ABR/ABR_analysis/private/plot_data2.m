@@ -75,6 +75,11 @@
             find_spl = find(round_spl <= 60);
             include_spl = spl(find_spl);
             include_zscore = data.z.score(find_spl);
+            sizeW = size(w);
+            sizeFindSPL = size(find_spl);
+            if sizeW(2) < sizeFindSPL(2)
+                w = [w, zeros(1, length(find_spl) - length(w))];
+            end
             include_w = w(find_spl);
         end
 
