@@ -121,6 +121,16 @@ if ~isempty(filename)
         abrs.y = [freq2' spl' data.y'];
         abrs.waves = [freq2' spl' abr'];
         
+        if exist(strcat(filename2, '.mat'),'file')
+            filename3 = strcat(filename2, '_old');
+            file_num = 2;
+            while exist(strcat(filename3, '.mat'),'file')
+                filename3 = strcat(filename3, num2str(file_num));
+                file_num = file_num + 1;
+            end
+            copyfile(strcat(filename2, '.mat'), strcat(filename3, '.mat'));
+        end
+        
         %HG ADDED 2/11/20
         abrs.AR_marker = AR_marker;
         
