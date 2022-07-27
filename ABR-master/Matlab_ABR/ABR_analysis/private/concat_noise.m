@@ -3,7 +3,7 @@ function NoiseVector=concat_noise(DataDir)
 %%
 % DataDir=[pwd '\NELData\SP-2016_07_04-Q265-Baseline\'];
 CurDir=pwd;
-AllFreq=["500" "1000" "2000" "4000" "8000" "click"]
+AllFreq=["500" "1000" "2000" "4000" "8000" "click"];
 addpath(pwd);
 
 %%
@@ -24,7 +24,7 @@ for freq_var=1:length(AllFreq)
     %%
     for file_var=1:length(allfiles)
         %HG ADDED 2/20/20
-        if ~contains(allfiles(file_var).name,'raw');
+        if ~contains(allfiles(file_var).name,'raw')
             picNum=sscanf(allfiles(file_var).name,search_string);
             cd(DataDir);
             xx=loadPic(picNum);
