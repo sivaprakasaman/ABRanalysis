@@ -154,7 +154,8 @@ abr_time=(0:dt:time_of_bin(length(abr)));
 %% Determine SPL of stimuli
 CalibFile  = sprintf('p%04d_calib', str2double(abr_Stimuli.cal_pic));
 command_line = sprintf('%s%s%c','[xcal]=',CalibFile,';');
-eval(command_line);
+eval(command_line); % JB: If you get an error here, make sure your calib file 
+                    % is named "p0001_calib" and not "p0001_calib_raw"
 freq_loc = find(xcal.CalibData(:,1)>=(freq_mean/1000));
 freq_level = xcal.CalibData(freq_loc(1),2);
 spl=freq_level+attn;

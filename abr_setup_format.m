@@ -21,10 +21,10 @@ if (ismac == 1) %Use if using a MAC
     
     
 else %Use if using Windows/Linux
-    addpath(genpath('Add code directory')) %ENTER the path of the directory containing your 'ABRAnalysis' folder
-    addpath(genpath('Add project directory')) %ENTER the path of the directory containing your project folder
-    code_DIR='Add code directory'; %ENTER the path of your 'ABRAnalysis' folder
-    project_DIR='Add project directory'; %ENTER the path of your project folder
+    addpath(genpath('C:\Users\bundyj\Downloads\')) %ENTER the path of the directory containing your 'ABRAnalysis' folder
+    addpath(genpath('C:\Users\bundyj\Downloads\')) %ENTER the path of the directory containing your project folder
+    code_DIR='C:\Users\bundyj\Downloads\ABRAnalysis\'; %ENTER the path of your 'ABRAnalysis' folder
+    project_DIR='C:\Users\bundyj\Downloads\Ivy_Andrew_CARBOvTTS_2\'; %ENTER the path of your project folder
 
     abr_root_dir = [code_DIR 'ABR-master\Matlab_ABR\'];
     
