@@ -29,7 +29,7 @@ for freq_var=1:length(AllFreq)
             cd(DataDir);
             xx=loadPic(picNum);
             cd(CurDir);
-            if iscell(xx.AD_Data.AD_Avg_V)
+            while iscell(xx.AD_Data.AD_Avg_V)
                 xx.AD_Data.AD_Avg_V=xx.AD_Data.AD_Avg_V{1};
             end
             

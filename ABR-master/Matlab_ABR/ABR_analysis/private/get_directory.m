@@ -247,8 +247,9 @@ a_files_all = dir('a*'); %should we check for mat files here?
 if isempty(TEMPdir)
     %If AR_marker exists, user set that AR does not need to be performed
     %Load in first a file to check for AR_marker
-    run(a_files_all(1).name);
-    x = ans;
+    load(a_files_all(1).name);
+%     load(a_files_all(1.name);
+%     x = ans;
     %AR_marker = x.AR_marker;
     %If AR_marker does not exist, call artifact rejection
     %if ~exist('AR_marker','var')

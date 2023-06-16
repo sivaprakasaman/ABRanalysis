@@ -19,9 +19,9 @@ if (ismac == 1) %Use if using a MAC
     
 else %Use if using Windows/Linux
     addpath(genpath('/mnt/ECF4E22CF4E1F92A/Research/Code/ABRanalysis/')) %ENTER the path of the directory containing your 'ABRAnalysis' folder
-    addpath(genpath('/media/asivapr/AndrewNVME/Pitch_Study/F30_Full_Data/ABR/HeinzLab/')) %ENTER the path of the directory containing your project folder
+    addpath(genpath('/media/asivapr/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/')) %ENTER the path of the directory containing your project folder
     code_DIR='/mnt/ECF4E22CF4E1F92A/Research/Code/ABRanalysis/'; %ENTER the path of your 'ABRAnalysis' folder
-    project_DIR='/media/asivapr/AndrewNVME/Pitch_Study/F30_Full_Data/ABR/HeinzLab/Baseline/'; %ENTER the path of your project folder
+    project_DIR='/media/asivapr/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/Baseline/'; %ENTER the path of your project folder
 
     abr_root_dir = [code_DIR 'ABR-master/Matlab_ABR/'];
     

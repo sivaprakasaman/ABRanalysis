@@ -37,7 +37,7 @@ a_files_all = dir('a*');
 k = 1;
 %Is this necessary to check for mat files???
 for i = 1:length(a_files_all)
-    if ~contains(a_files_all(i).name,'.mat')
+    if contains(a_files_all(i).name,'.mat')
         a_files(k) = a_files_all(i);
         k = k+1;
     end
@@ -62,8 +62,11 @@ r = ones(1,len_freq); %counter for rows for different freq
 
 %Begin looping through a files, filling in data and atten arrays accordingly
 for k = 1:length(a_files)
-    run(a_files(k).name);
-    x = ans;   
+%     run(a_files(k).name);
+%     x = ans;   
+    
+    load(a_files(k).name);
+    
     %If freq is click...
     if x.Stimuli.clickYes == 1
         f = 1; %col 1 is click
@@ -184,9 +187,15 @@ if strcmp(continueButton,'Yes')
     %Save a file data into new araw file - first part of for loop
     %Save ac_data into original a file - second part of for loop
     for aNum = 1:length(a_files)
-        run(a_files(aNum).name);
+%         run(a_files(aNum).name);
+        load(a_files(aNum).name);
+        
+        ans = x;
+        
         x_araw = ans; 
         yyy = ans; %had this as x
+        
+        
         aname = a_files(aNum).name;
         arawname = strcat('araw',aname(2:end));
         fname_araw = arawname;
@@ -276,31 +285,39 @@ elseif strcmp(continueButton,'No') %functional
         %Save AR_marker into struct of each a file
         for aNum = 1:length(a_files)
             %Load in each a file
-            run(a_files(aNum).name);
-            x_new = ans; 
+%             run(a_files(aNum).name);
+%             x_new = ans; 
+            
+            load(a_files(aNum).name);
+            x_new = x;
+            
+            
             %Add in AR_marker to struct
             x_new.AR_marker = 1;
             %Resave a file (w/AR_marker) over current a file
             fname = a_files(aNum).name;
 
             %Copied below from gain_20000 code
-            [dummy1 dummy2 ext] = fileparts(fname);
-            if (strcmp(ext,'.m') ~= 1)
-                fname = [fname '.m'];
-            end
-            fid = fopen(fname,'wt+');
-            if (fid < 0)
-                rc = -1;
-                return;
-            end      
-            [dirname filename] = fileparts(fname);
-            fprintf(fid,'function x = %s\n', filename);
-            %here1 = strcat(pwd,filesep,fname);
+            %What the hell is this doing and why??? AS COME BACK TO LATER 
+            
+%             [dummy1 dummy2 ext] = fileparts(fname);
+%             if (strcmp(ext,'.m') ~= 1)
+%                 fname = [fname '.m'];
+%             end
+%             fid = fopen(fname,'wt+');
+%             if (fid < 0)
+%                 rc = -1;
+%                 return;
+%             end      
+%             [dirname filename] = fileparts(fname);
+%             fprintf(fid,'function x = %s\n', filename);
+%             %here1 = strcat(pwd,filesep,fname);
             here1 = pwd;
             
             %Need to go into analysis folder to access mat2text
             cd(abr_out_dir);
-            mat2text(x_new,fid);
+            %AS Commented out
+%             mat2text(x_new,fid);
             fclose('all');
             
             %Go back to directory of a files
