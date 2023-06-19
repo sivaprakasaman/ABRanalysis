@@ -243,7 +243,7 @@ end
 % No araw files exist if AR - perform AR for ALL files
 
 TEMPdir=dir('araw*');
-a_files_all = dir('a*'); %should we check for mat files here?
+a_files_all = dir('a*.mat'); %should we check for mat files here?
 if isempty(TEMPdir)
     %If AR_marker exists, user set that AR does not need to be performed
     %Load in first a file to check for AR_marker
