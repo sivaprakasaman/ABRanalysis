@@ -13,7 +13,7 @@ function [calibMaxdBSPL, isClick] = getMaxdBSPL(calibpicnumstr,freq)
     CalibData(:,2)=trifilt(CalibData(:,2)',5)';
 
     %if is nan, then assume click calibration
-    if freq==0
+    if freq==0 || isnan(freq)
         %median of inv calib. Method decided on as of 06/19/2023
         calibMaxdBSPL=median(CalibData(:,2));
         isClick = 1;
