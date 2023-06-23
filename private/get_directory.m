@@ -12,8 +12,13 @@ set(han.viewraw,'Value',0);
 %d = dir(abr_data_dir);
 cd(abr_data_dir)
 folderNum = 1; %counter for FOLDER array, put this where???
-answer = questdlg('Are your data folders correctly formatted?',...
-                'Data Format', 'Yes', 'No', 'I dont know');
+
+% Doing away with this
+% answer = questdlg('Are your data folders correctly formatted?',...
+%                 'Data Format', 'Yes', 'No', 'I dont know');
+
+%assert No for now, clean up asap
+answer = 'No';
             
     if contains(answer, 'Yes')
         formatCorrect = true;

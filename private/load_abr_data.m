@@ -153,7 +153,7 @@ abr2=abr(:,order);
 attn=attn(:,order);
 freqs=freqs(:,order);
 
-abr3=-abr2/20000*1000000; % in uV, invert to make waveforms look "normal"
+abr3=abr2/20000*1000000; % in uV
 abr=resample(abr3,2,1); %double sampling frequency of ABRs
 freq_mean=mean(freqs);
 freq=round(freqs(1,1)/500)*500; %round to nearest 500 Hz
