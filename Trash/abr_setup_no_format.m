@@ -1,4 +1,6 @@
-function abr_setup
+function abr_setup_no_format
+%This will be the only setup folder...no worrying about format. Should only
+%need your ABR data directory
 
 global abr_root_dir abr_data_dir abr_out_dir 
 
@@ -9,7 +11,7 @@ addpath(genpath('/media/sivaprakasaman/AndrewNVME/Pitch_Study/Pitch_Diagnostics_
 project_DIR='/media/sivaprakasaman/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/Baseline/'; %ENTER the path of your project folder
 
 code_DIR=[pwd,'/']; %ENTER the path of your 'ABRAnalysis' folder
-code_DIR = pwd;
+
 abr_root_dir = [code_DIR];
 abr_data_dir = [project_DIR];
 abr_out_dir = [project_DIR 'Analysis'];

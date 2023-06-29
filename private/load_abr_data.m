@@ -47,7 +47,7 @@ attn=NaN*ones(1,num);
 if viewraw == 0 %AC corrected data
     hhh=dir(sprintf('a%04d*.mat',pic(1)));
 else %RAW data
-    hhh=dir(sprintf('araw%04d*.mat',pic(1)));
+    hhh=dir(sprintf('RAW/a%04d*.mat',pic(1)));
 end
 %Make sure you are looking at a file, NOT ARAW file
 if (contains(hhh.name,'araw') && (viewraw == 0))
@@ -57,10 +57,11 @@ if exist(hhh.name,'file') && ~isempty(hhh)
     for i=1:num
         if viewraw == 0 %AC corrected data
             fname=dir(sprintf('a%04d*.mat',pic(i)));
+            filename=fname.name;
         else %RAW data
-            fname=dir(sprintf('araw%04d*.mat',pic(i)));
+            fname=dir(sprintf('RAW/a%04d*.mat',pic(i)));
+            filename = [fname.folder,'/',fname.name];
         end
-        filename=fname.name(1:end-4);
 %         eval(['x=' filename ';'])
         load(filename,'x');
         

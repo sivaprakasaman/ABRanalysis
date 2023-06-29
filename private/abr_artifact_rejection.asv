@@ -34,10 +34,20 @@ warning('off');
 %cd Y:\Users\Hannah\ARO_2018_MEMR_TTS\Data\Q350\ABR\pre\1weekPreTTS\MH-2018_08_29-Q350_preTTS
 
 a_files = {dir('a*_ABR_*.mat').name};
+% k = 1;
+% %Is this necessary to check for mat files???
+% for i = 1:length(a_files_all)
+%     if contains(a_files_all(i).name,'.mat')
+%         a_files(k) = a_files_all(i);
+%         k = k+1;
+%     end
+% end
 
 %Set freqs
 freq = freqUsed;
-           
+            
+%freq = [NaN 500 1000 2000 4000 8000];
+
 %ASSUMPTION: assuming max of 15 levels tested for array purposes
 max_levels = 15;
 

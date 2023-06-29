@@ -27,7 +27,7 @@ if nargin < 1
         0.6350    0.0780    0.1840; ];
     set(groot,'defaultAxesColorOrder',co);
     
-    abr_gui_initiate_HG; %% Makes the GUI visible
+    abr_gui_initiate; %% Makes the GUI visible
     
     %HG ADDED 9/30
     dataChinDir = pwd;

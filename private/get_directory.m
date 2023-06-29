@@ -247,7 +247,7 @@ end
 % araw files exist if AR has already been performed - don't perform AR again
 % No araw files exist if AR - perform AR for ALL files
 
-TEMPdir=dir('araw*');
+TEMPdir=dir('*_AR*');
 a_files_all = dir('a*.mat'); %should we check for mat files here?
 if isempty(TEMPdir)
     %If AR_marker exists, user set that AR does not need to be performed
