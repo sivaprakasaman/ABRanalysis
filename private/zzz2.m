@@ -23,9 +23,12 @@ attn=NaN*ones(1,num);
 hhh=dir(sprintf('a%04d*.mat',pic(1)));
 if exist(hhh.name,'file') && ~isempty(hhh)
     for i=1:num
+        %why do we have a loadpic function if we aren't using it
+        %everywhere!!!! - AS
         fname=dir(sprintf('a%04d*.mat',pic(i)));
-        filename=fname.name(1:end-2);
-        eval(['x=' filename ';'])
+        filename=fname.name; %do this better 
+%         eval(['x=' filename ';'])
+        load(filename,'x');
         %HG edited 10/24/19 -- all click freqs should be NaN, not 1000Hz
         if ~contains(filename,'click')
             freqs(1,i)=x.Stimuli.freq_hz;
@@ -57,6 +60,9 @@ if exist(hhh.name,'file') && ~isempty(hhh)
             abr(:,i)=x.AD_Data.AD_Avg_V(1:end-1)'-mean(x.AD_Data.AD_Avg_V(1:end-1)); % removes DC offset
         end        
     end
+
+
+%This section might be useful for Fernando's phase variance or if data without an a is collected? REFINE - AS   
 else %WHEN DOES IT  GO INTO HERE?
     for i=1:num
         fname=dir(sprintf('p%04d*.mat',pic(i)));
@@ -103,17 +109,36 @@ freq_mean=mean(freqs); freq=round(freqs(1,1)/500)*500; %round to nearest 500 Hz
 abr_time=(0:dt:time_of_bin(length(abr)));
 
 %Determine SPL of stimuli
-clickmarker = 0;
-CalibFile  = sprintf('p%04d_calib', str2num(abr_Stimuli.cal_pic));
-command_line = sprintf('%s%s%c','[xcal]=',CalibFile,';');
-eval(command_line);
-if isequaln(freq_mean,NaN)
-    freq_mean = 1000; %for next calculation
-    clickmarker = 1;
-end
-freq_loc = find(xcal.CalibData(:,1)>=(freq_mean/1000)); %What is this doing?
-freq_level = xcal.CalibData(freq_loc(1),2); %%%HERE!!
+% clickmarker = 0;
+% command_line = sprintf('%s%s%c','[xcal]=',CalibFile,';');
+
+
+
+% CalibFile  = sprintf('p%04d_calib', str2num(abr_Stimuli.cal_pic));
+% searchstr = [CalibFile,'*'];
+% CalibFile = {dir(fullfile(cd,searchstr)).name};
+% CalibFile = CalibFile{1};
+% 
+% command_line = sprintf('%s%s%c','[xcal]=',CalibFile(1:end-2),';');
+% 
+% eval(command_line);
+% 
+% if isequaln(freq_mean,NaN)
+%     freq_mean = 1000; %for next calculation
+%     clickmarker = 1;
+% end
+% freq_loc = find(xcal.CalibData(:,1)>=(freq_mean/1000)); %What is this doing?
+% freq_level = xcal.CalibData(freq_loc(1),2); %%%HERE!!
+
+% AS - find the right calib file, whether or not it says raw or not
+% Should verify user knows to pick inv calib!!
+% make this better..should just be able to use loadpic or something
+% I made this a function since it's done in another place.
+
+[freq_level, clickmarker] = getMaxdBSPL(abr_Stimuli.cal_pic,freq);
 spl2=freq_level+attn;
+
+
 
 %Only look at abrs below maxdBtoanalyze
 ABRcounter = 1;

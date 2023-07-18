@@ -170,7 +170,7 @@ elseif strcmp(command_str,'nextPics')
         end
         if isequaln(avgx,xx(1))
             %Find next freq
-%             freqNOW1 = find(freqORDER==avgx);
+%             freqNOW1 = find(freqORDER==avgx);f
 %             freqNOW = freqORDER(freqNOW1);
             if ~isnan(avgx) %NaN is last element
                 freqNOW1 = find(freqORDER==avgx);

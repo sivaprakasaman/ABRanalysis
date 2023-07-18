@@ -16,14 +16,14 @@ axis off; pause(0.5); close(22);
 % end
 
 q_fldr = strcat('Q', num2str(animal));
-if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
-    type = 'pre';
-elseif strcmp('post',regexp(abr_Stimuli.dir,'post','match')) == 1
-    type = 'post';
-else
-    type = 'none';
-end
-ChinDir = strcat(abr_out_dir, q_fldr, filesep, type, filesep);
+% if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
+%     type = 'pre';
+% elseif strcmp('post',regexp(abr_Stimuli.dir,'post','match')) == 1
+%     type = 'post';
+% else
+%     type = 'none';
+% end
+ChinDir = [abr_out_dir,'/', q_fldr];
 
 if ~isdir(ChinDir)
     mkdir(ChinDir);

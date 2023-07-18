@@ -4,12 +4,12 @@ global 	abr_out_dir freq replot animal abr_Stimuli
 
 
 q_fldr = strcat('Q', num2str(animal));
-if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
-    type = 'pre';
-elseif strcmp('post',regexp(abr_Stimuli.dir,'post','match')) == 1
-    type = 'post';
-end
-ChinDir = strcat(abr_out_dir, q_fldr, filesep, type, filesep);
+% if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
+%     type = 'pre';
+% elseif strcmp('post',regexp(abr_Stimuli.dir,'post','match')) == 1
+%     type = 'post';
+% end
+ChinDir = [abr_out_dir,'/', q_fldr];
 
 cd(ChinDir)
 
