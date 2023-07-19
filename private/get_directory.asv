@@ -1,6 +1,6 @@
 function dirname = get_directory
 
-global abr_data_dir abr_Stimuli han latcomp dataFolderpath abr_out_dir han viewraw dimcheck freqUsed abr_FIG 
+global abr_data_dir abr_Stimuli han latcomp dataFolderpath abr_out_dir han viewraw dimcheck freqUsed abr_FIG calib_sel
 
 %% Reset checkbox to unchecked when loading new directory
 dimcheck = 0;
@@ -192,23 +192,20 @@ end
 cd(dataFolderpath)
         
 %% Warn if more than one calib file, if so list pics (Commented out 10/5/21 due to missing findPics, will comment back later)
-calibPICs = dir('*calib*.m');
+calibPICs = dir('*calib_raw*.m');
 if length(calibPICs) > 1
 	beep
     fn = {calibPICs.name};
-    [calib_idx,ok] = listdlg('Name', 'Calibration File Manager', ...
-        'PromptString',{'Please, select one calibration file to use.',''},...
-        'ListSize',       [300,300], ...
-        'SelectionMode','single','ListString',fn);
+    [calib_idx,ok] = listdlg('PromptString',{'Multiple calibrations detected.',...
+    'Please, select one calibration file to use.',''},...
+    'SelectionMode','single','ListString',fn);
 end
 if isempty(calibPICs)
 	beep
 	mydlg=warndlg('No Calibrations Detected. Please Make Sure To Include One Within The Selected Directory','Calibration Files');
 	waitfor(mydlg)
 end
-abr_Stimuli.cal_pic = calib_idx;
-set(abr_FIG.parm_txt(1),'string',calibPICs(calib_idx).name,'Interpreter','none','Color',[0.4660 0.6740 0.1880]);
-
+calib_sel = calibPICs(calib_idx).name;
 % Determine which freqs are present in the data
 % If freq is present, it is added to freqUsed
 freqUsed = [];

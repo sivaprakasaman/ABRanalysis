@@ -5,8 +5,8 @@ ax2  = cell2struct(cell(1,3),{'axes','xlab','ylab'},2);
 abrs  = cell2struct(cell(1,10),{'abr1','abr2','abr3','abr4','abr5','abr6','abr7','abr8','abr9','abr10'},2);
 abr_FIG = struct('handle',[],'push',push,'ax1',ax1,'ax2',ax2,'abrs',abrs,'parm_text',[],'dir_text',[]);
 
-abr_Stimuli = struct('cal_pic','TBD', ...
-	'abr_pic','TBD', ...
+abr_Stimuli = struct('cal_pic','1', ...
+	'abr_pic','27-33,37', ...
 	'start', 0.00, ...
 	'end',20.00, ...
 	'start_template', 2.50, ...
@@ -94,7 +94,7 @@ text(0.5+0.92*0.33,0.945,'(attn)','FontSize',10,'horizontalalignment','left','Ve
 axes('Position',[0 0.07 0.35 0.4]);
 axis('off');
 text(.2,.65,'Directory:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.58,'Calibration File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.58,'Inverse Calibration File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 
 text(.2,.43,'ABR Files:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 text(.2,.37,'Zoom Left (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
@@ -103,8 +103,8 @@ text(.2,.24,'Template Left (ms):','fontsize',10,'color','k','horizontalalignment
 text(.2,.19,'Template Right (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 text(.2,.09,'Number of Templates:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 
-abr_FIG.parm_txt(1)  = text(.8,.58,num2str(abr_Stimuli.cal_pic),   'fontsize',10,'color','r','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',1);');
-abr_FIG.parm_txt(2)  = text(.8,.43,num2str(abr_Stimuli.abr_pic),   'fontsize',10,'color','k','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',2);');
+abr_FIG.parm_txt(1)  = text(.8,.58,num2str(abr_Stimuli.cal_pic),   'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',1);');
+abr_FIG.parm_txt(2)  = text(.8,.43,num2str(abr_Stimuli.abr_pic),   'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',2);');
 abr_FIG.parm_txt(3)  = text(.8,.37,num2str(abr_Stimuli.start),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',3);');
 abr_FIG.parm_txt(4)  = text(.8,.32,num2str(abr_Stimuli.end),  'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',4);');
 abr_FIG.parm_txt(5)  = text(.8,.24,num2str(abr_Stimuli.start_template),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',5);');

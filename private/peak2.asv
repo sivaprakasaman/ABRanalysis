@@ -1,7 +1,6 @@
 %function [pastPeaks] = peak2(type,id,pastPeaks)
 function peak2(type,id)
 
-
 %HG ADDED 2/6/20
 %In order to add in vertical line 3 ms after P1
 
@@ -20,7 +19,6 @@ vertLineMarker = 0;
 x=abr_Stimuli.start;
 while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     hold on;
-    pause(2);
     [x,y,marker] = ginput(1);
     %Marker=1 if left mouse button pressed
     %Marker=2 if middle mouse button pressed
@@ -69,10 +67,8 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     %if (x >= abr_Stimuli.start & x <= abr_Stimuli.end)
     if (type == 'P')
         invert = 1;
-        type = 'w';
     else %type N
         invert = -1;
-        type = 'n';
     end
     %declare pks
     pks2 = zeros(maxloops,maxpeaks);

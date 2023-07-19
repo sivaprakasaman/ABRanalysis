@@ -7,14 +7,14 @@ global abr_root_dir abr_data_dir abr_out_dir
 addpath(genpath(pwd)) %ENTER the path of the directory containing your 'ABRAnalysis' folder
 rmpath(genpath('Trash'));
 
-addpath(genpath('/media/sivaprakasaman/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/')) %ENTER the path of the directory containing your project folder
-project_DIR='/media/sivaprakasaman/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/Baseline/'; %ENTER the path of your project folder
+addpath(genpath('/Users/fernandoaguileradealba/Desktop/AS-2023_07_10-Q410_TTS_EFR_ABR_Check')) %ENTER the path of the directory containing your project folder
+project_DIR='/Users/fernandoaguileradealba/Desktop'; %ENTER the path of your project folder
 
 code_DIR=[pwd,'/']; %ENTER the path of your 'ABRAnalysis' folder
 
 abr_root_dir = [code_DIR];
 abr_data_dir = [project_DIR];
-abr_out_dir = [project_DIR 'Analysis'];
+abr_out_dir = [project_DIR '/Analysis'];
 
 addpath([abr_root_dir])
 

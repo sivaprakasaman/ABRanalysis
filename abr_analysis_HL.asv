@@ -46,49 +46,29 @@ elseif strcmp(command_str,'stimulus')
             'SelectionMode','single','ListString',fn);
             abr_Stimuli.cal_pic = calib_idx;
             set(abr_FIG.parm_txt(1),'string',calibPICs(calib_idx).name,'Interpreter','none');
-            update_picnums_for_freqval(freq/1000);
+        case 2
+            new_value = inputdlg({'Enter ABR Picture File Numbers'},...
+                'Input: ABR p-Files', [1 50]); 
+            new_value = new_value{1};
+            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
+            abr_Stimuli.abr_pic = new_value;
         case 3
-            new_value = inputdlg({'Enter ABR Waveform Left Time Limit'},...
-                'Input: ABR Time Limit', [1 50]); 
+            new_value = inputdlg({'Enter ABR Picture File Numbers'},...
+                'Input: ABR p-Files', [1 50]); 
             new_value = new_value{1};
             set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
             abr_Stimuli.start = str2double(new_value);
-            update_picnums_for_freqval(freq/1000);
         case 4
-            new_value = inputdlg({'Enter ABR Waveform Right Time Limit'},...
-            'Input: ABR Time Limit', [1 50]); 
-            new_value = new_value{1};
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
             abr_Stimuli.end = str2double(new_value);
-            update_picnums_for_freqval(freq/1000);
+            %set(han.peak_panel,'Box','on');
         case 5
-            new_value = inputdlg({'Enter ABR Template Left Time Limit'},...
-            'Input: ABR Time Limit', [1 50]); 
-            new_value = new_value{1};
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
             abr_Stimuli.start_template = str2double(new_value);
-            update_picnums_for_freqval(freq/1000);
         case 6
-            new_value = inputdlg({'Enter ABR Template Right Time Limit'},...
-            'Input: ABR Time Limit', [1 50]); 
-            new_value = new_value{1};
             abr_Stimuli.end_template = str2double(new_value);
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
-            update_picnums_for_freqval(freq/1000);
         case 7
-            new_value = inputdlg({'Enter Number of ABR Templates'},...
-            'Input: ABR Templates', [1 50]); 
-            new_value = new_value{1};
             abr_Stimuli.num_templates = str2double(new_value);
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
-            update_picnums_for_freqval(freq/1000);
         case 8
-            new_value = inputdlg({'Enter Maximum Sound Pressure Level (SPL)'},...
-            'Input: Max ', [1 50]); 
-            new_value = new_value{1};
             abr_Stimuli.maxdB2analyze= str2double(new_value);
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
-            update_picnums_for_freqval(freq/1000);
     end
  
 elseif strcmp(command_str,'nextPics')
@@ -308,7 +288,7 @@ elseif strcmp(command_str,'peak1')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('P',1);
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks');
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -316,7 +296,7 @@ elseif strcmp(command_str,'trou1')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('N',1)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks');
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -324,7 +304,7 @@ elseif strcmp(command_str,'peak2')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('P',2)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -332,7 +312,7 @@ elseif strcmp(command_str,'trou2')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('N',2)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -340,7 +320,7 @@ elseif strcmp(command_str,'peak3')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('P',3)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -348,7 +328,7 @@ elseif strcmp(command_str,'trou3')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('N',3)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -356,7 +336,7 @@ elseif strcmp(command_str,'peak4')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('P',4)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -364,7 +344,7 @@ elseif strcmp(command_str,'trou4')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('N',4)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -372,7 +352,7 @@ elseif strcmp(command_str,'peak5')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('P',5)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
     
@@ -380,7 +360,7 @@ elseif strcmp(command_str,'trou5')
     if strcmp(get(han.peak_panel,'Box'),'on')
         peak2('N',5)
     else
-        msgbox('Select Frequency of Interest Before Marking Peaks')
+        msgbox('Load new ABR files before marking peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
 
@@ -500,7 +480,7 @@ elseif strcmp(command_str,'print')
 %SAVE -- pressing push button "Save as File"
 elseif strcmp(command_str,'file')
     if strcmp(get(han.abr_panel,'Box'),'on')
-        save_file2_HG;
+        save_file2_H
         data.save_chk = 1;
     else 
         %save_file2_HG;

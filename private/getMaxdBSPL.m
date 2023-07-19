@@ -1,7 +1,7 @@
 function [calibMaxdBSPL, isClick] = getMaxdBSPL(calibpicnumstr,freq)
  %Written by AS to use desired calib file
 
-    CalibFile  = sprintf('p%04d_calib', str2num(calibpicnumstr));
+    CalibFile  = sprintf('p%04d_calib', calibpicnumstr);
     searchstr = [CalibFile,'*'];
     CalibFile = {dir(fullfile(cd,searchstr)).name};
     CalibFile = CalibFile{1};
