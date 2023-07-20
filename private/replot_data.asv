@@ -25,13 +25,7 @@ str = {d.name};
 drawnow; 
 sel_file = d(selection).name;
 idx = strfind(sel_file,'Hz');
-sel_file = sel_file(idx-4:idx-1);
-if contains(sel_file,'_')
-    sel_freq = sel_file(2:end);
-else
-    sel_freq = sel_file;
-end
-
+sel_file = sel_file(idx-4:idx-1)
 if (ok==0 | isempty(selection))
 else
 	replotfile=str{selection};
@@ -47,6 +41,6 @@ else
 		replot.abrs.waves(replot.abrs.waves(:,1)~=freq,:)=[];
         zzz2;
 	else
-		msgbox(sprintf('Unable to plot previous peaks due to incompatible frequency selection. Try again by plotting %.1f kHz instead',str2num(sel_freq)/1000));
+		msgbox(sprintf('Unable to plot previous peaks due to incompatible frequency selection,  plot %s kHz instead',num2str(freq/1000)));
     end
 end

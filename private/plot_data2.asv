@@ -3,7 +3,7 @@
    %STILL NEED TO INPUT stop and vertLineMarker
 
     global 	data han spl attn line_width abr_Stimuli abr_time abr w upper_y_bound lower_y_bound y_shift padvoltage num thresh_mag reff AVG_reff freq ...
-        include_spl include_zscore include_w replot temp_view %abr_AR AR_marker plot_AR
+        include_spl include_zscore include_w replot %abr_AR AR_marker plot_AR
 
 
     %Clear out abr_AR if AR button NOT PRESSED
@@ -172,10 +172,9 @@
         upper_bound = max(bounded_abr) + 0.01*max(bounded_abr);
         lower_bound = min(bounded_abr) - 0.01*min(bounded_abr);
         if temp_view == 1
-            plot([abr_Stimuli.start_template abr_Stimuli.start_template abr_Stimuli.end_template abr_Stimuli.end_template...
+        plot([abr_Stimuli.start_template abr_Stimuli.start_template abr_Stimuli.end_template abr_Stimuli.end_template...
             abr_Stimuli.start_template],[upper_bound lower_bound lower_bound...
             upper_bound upper_bound],'-r','LineWidth',line_width)
-        end
 
 
         for i=1:num

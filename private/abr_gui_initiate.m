@@ -5,7 +5,7 @@ ax2  = cell2struct(cell(1,3),{'axes','xlab','ylab'},2);
 abrs  = cell2struct(cell(1,10),{'abr1','abr2','abr3','abr4','abr5','abr6','abr7','abr8','abr9','abr10'},2);
 abr_FIG = struct('handle',[],'push',push,'ax1',ax1,'ax2',ax2,'abrs',abrs,'parm_text',[],'dir_text',[]);
 
-abr_Stimuli = struct('cal_pic','TBD', ...
+abr_Stimuli = struct('cal_pic','Select Calibration', ...
 	'abr_pic','TBD', ...
 	'start', 0.00, ...
 	'end',20.00, ...
@@ -46,8 +46,11 @@ abr_FIG.push.refdata = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''re
 %invert checkbox
 han.invert = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''invert'');','style','checkbox','Units','normalized','position',[0.413 0.14 0.0630 .03],'String','Invert','Value',0,'BackgroundColor',[0.8549 0.8549 0.8549]);
 
+%template checkbox
+han.temp = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''temp'');','style','checkbox','Units','normalized','position',[0.07 0.05 0.0630 .03],'String','Template','Value',0,'BackgroundColor',[0.8549 0.8549 0.8549]);
+set(han.temp,'Value',1);
 %Next push button
-abr_FIG.push.nextPics = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''nextPics'');','style','pushbutton','Units','normalized','position',[0.3 0.32 0.028 0.025],'string','Next');
+%abr_FIG.push.nextPics = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''nextPics'');','style','pushbutton','Units','normalized','position',[0.3 0.32 0.028 0.025],'string','Next');
 
 %P1-P5, N1-N5 push buttons
 abr_FIG.push.peak1 = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''peak1'');','style','togglebutton','Units','normalized','position',[0.35 0.21 0.02125 0.03],'string','w1');
@@ -82,7 +85,7 @@ abr_FIG.push.print   = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''pr
 abr_FIG.push.file   = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''file'');','style','pushbutton','Units','normalized','position',[.35 0.05 0.1260 .03],'string','Save as File');
 
 %Edit text box
-abr_FIG.push.edit    = uicontrol(abr_FIG.handle,'style','edit', 'callback', 'abr_analysis_HL(''edit'');','Units','normalized','position',[.22 .05 .1 .03],'string','','FontSize',12);
+%abr_FIG.push.edit    = uicontrol(abr_FIG.handle,'style','edit', 'callback', 'abr_analysis_HL(''edit'');','Units','normalized','position',[.22 .05 .1 .03],'string','','FontSize',12);
 
 axes('Position',[0 0 1 1]); 
 axis off;
@@ -148,7 +151,7 @@ han.peak_panel=gca;
 axes('Position',[0.86 0.07 0.1 0.86]); 
 han.xcor_panel=gca;
 title('XCORR','FontSize',14)
-xlabel('Norm. Lag','fontsize',12);
+xlabel('Lag (ms)','fontsize',12);
 
 axes('Position',[0.06 0.44 0.17 0.22]); 
 han.amp_panel=gca;

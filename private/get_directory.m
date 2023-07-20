@@ -194,20 +194,21 @@ cd(dataFolderpath)
 %% Warn if more than one calib file, if so list pics (Commented out 10/5/21 due to missing findPics, will comment back later)
 calibPICs = dir('*calib*.m');
 if length(calibPICs) > 1
-	beep
     fn = {calibPICs.name};
     [calib_idx,ok] = listdlg('Name', 'Calibration File Manager', ...
         'PromptString',{'Please, select one calibration file to use.',''},...
         'ListSize',       [300,300], ...
         'SelectionMode','single','ListString',fn);
+    abr_Stimuli.cal_pic = calib_idx;
+    set(abr_FIG.parm_txt(1),'string',calibPICs(calib_idx).name,'Interpreter','none','Color',[0.4660 0.6740 0.1880]);
 end
 if isempty(calibPICs)
-	beep
-	mydlg=warndlg('No Calibrations Detected. Please Make Sure To Include One Within The Selected Directory','Calibration Files');
+	mydlg=warndlg('No Calibration Files Detected. Please Make Sure To Include One Within The Selected Directory or Select a New Directory','Calibration Files');
 	waitfor(mydlg)
+    set(abr_FIG.parm_txt(1),'string','Select Calibration','Interpreter','none','Color','r');
+
 end
-abr_Stimuli.cal_pic = calib_idx;
-set(abr_FIG.parm_txt(1),'string',calibPICs(calib_idx).name,'Interpreter','none','Color',[0.4660 0.6740 0.1880]);
+
 
 % Determine which freqs are present in the data
 % If freq is present, it is added to freqUsed

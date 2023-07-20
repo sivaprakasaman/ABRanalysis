@@ -7,7 +7,7 @@ function abr_analysis_HL(command_str,parm_num)
 %This function computes an ABR threshold based on series of AVERAGER files.
 
 global paramsIN abr_FIG abr_Stimuli abr_root_dir abr_data_dir hearingStatus animal data ...
-    han invert abr_out_dir freq date dataFolderpath viewraw
+    han invert abr_out_dir freq date dataFolderpath viewraw temp_view
 
 disp('in abr_analysis_HL.m')
 
@@ -26,9 +26,36 @@ if nargin < 1
         0.3010    0.7450    0.9330;
         0.6350    0.0780    0.1840; ];
     set(groot,'defaultAxesColorOrder',co);
-    
+    temp_view = get(han.temp,'Value'); % should become equal to 1
+
     abr_gui_initiate; %% Makes the GUI visible
+    abr_Stimuli.dir = get_directory;
+    TEMPdir=dir('*ABR*.mat');
+    while isempty(TEMPdir)
+        beep
+        uiwait(warndlg('ABR Files Cannot Be Found in Current Directory. Please, Select a New Directory','ERROR','modal'));
+        abr_Stimuli.dir = get_directory;
+        TEMPdir=dir('*ABR*.mat');
+    end
+    set(han.abr_panel,'Box','off');
+    set(han.peak_panel,'Box','off');
+    set(abr_FIG.dir_txt,'string',abr_Stimuli.dir,'Color',[0.4660 0.6740 0.1880]);
     
+    if strcmp(get(han.abr_panel,'Box'),'off')
+        animal_idx = strfind(abr_Stimuli.dir,"Q");
+        animal = abr_Stimuli.dir(animal_idx+1:animal_idx+3);
+        
+        paramsIN.animal= animal;
+        if contains(lower(abr_Stimuli.dir), {'nh', 'pre'})
+            hearingStatus = 'NH';
+        elseif contains(lower(abr_Stimuli.dir), {'hi', 'pts', 'tts', 'post'})
+            hearingStatus= 'HI';
+        end
+        paramsIN.hearingStatus= hearingStatus;
+        axes(han.text_panel);
+        text(0.04,0.95,['Q' num2str(paramsIN.animal)],'FontSize',14,'horizontalalignment','left','VerticalAlignment','bottom')
+        set(han.abr_panel,'Box','on');
+    end
     %HG ADDED 9/30
     dataChinDir = pwd;
     
@@ -62,22 +89,31 @@ elseif strcmp(command_str,'stimulus')
             abr_Stimuli.end = str2double(new_value);
             update_picnums_for_freqval(freq/1000);
         case 5
-            new_value = inputdlg({'Enter ABR Template Left Time Limit'},...
-            'Input: ABR Time Limit', [1 50]); 
-            new_value = new_value{1};
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
-            abr_Stimuli.start_template = str2double(new_value);
-            update_picnums_for_freqval(freq/1000);
+            if temp_view == 1
+                new_value = inputdlg({'Enter ABR Template Left Time Limit'},...
+                'Input: ABR Time Limit', [1 50]); 
+                new_value = new_value{1};
+                set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
+                abr_Stimuli.start_template = str2double(new_value);
+                update_picnums_for_freqval(freq/1000);
+            else
+                uiwait(warndlg('Template Disabled. Limits Cannot Be Changed Until Template is Activated','ERROR','modal'));
+            end
         case 6
-            new_value = inputdlg({'Enter ABR Template Right Time Limit'},...
-            'Input: ABR Time Limit', [1 50]); 
-            new_value = new_value{1};
-            abr_Stimuli.end_template = str2double(new_value);
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
-            update_picnums_for_freqval(freq/1000);
+            if temp_view == 1
+                new_value = inputdlg({'Enter ABR Template Right Time Limit'},...
+                'Input: ABR Time Limit', [1 50]); 
+                new_value = new_value{1};
+                abr_Stimuli.end_template = str2double(new_value);
+                set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
+                update_picnums_for_freqval(freq/1000);
+            else
+                uiwait(warndlg('Template Disabled. Limits Cannot Be Changed Until Template is Activated','ERROR','modal'));
+            end
+
         case 7
-            new_value = inputdlg({'Enter Number of ABR Templates'},...
-            'Input: ABR Templates', [1 50]); 
+            new_value = inputdlg({'Enter Number of Templates'},...
+            'Input: ABR Template', [1 50]); 
             new_value = new_value{1};
             abr_Stimuli.num_templates = str2double(new_value);
             set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
@@ -90,125 +126,15 @@ elseif strcmp(command_str,'stimulus')
             set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
             update_picnums_for_freqval(freq/1000);
     end
- 
-elseif strcmp(command_str,'nextPics')
-    clear global 'replot';
-    
-    %HERE!!
-    
-    %If user has edited the figure in any way (threshold editing, peak
-    %picking, etc.), checks to see if user wants to save before clearing data
-    if ~isempty(data)
-        if sum(sum(~isnan(data.x)))
-            ButtonName=questdlg('Would you like to save?');
-            if strcmp(ButtonName,'Yes')
-                save_file2_HG; %Saves mat file
-            elseif strcmp(ButtonName,'Cancel')
-                return
-            end
-        end
-    end
-    ExpDir = dataFolderpath;
-    cd(ExpDir);
-    hhh=dir('a*ABR*'); %Looking at a-files only (not p-files)
-    z = str2double(hhh(1).name(2:5));
-    ABRpics=zeros(1,(length(hhh)+(z-1)));
-    ABRfreqs=zeros(1,(length(hhh)+(z-1)));
-    for i=z:length(ABRfreqs) 
-        ABRpics(i)=str2double(hhh(i-(z-1)).name(2:5));
-        ABRfreqs(i)=str2double(hhh(i-(z-1)).name(11:14));
-    end
-    
-    if ABRfreqs(end) == 0
-        ABRfreqs = ABRfreqs(1:end-1);
-    end
+elseif strcmp(command_str,'temp')
+    temp_view = get(han.temp,'Value'); % should become equal to 1
+    update_picnums_for_freqval(freq/1000);
 
-    freqORDER = [500 1000 2000 4000 8000 NaN];
-
-    %AS | THIS SEEMS BADLY WRITTEN. COME BACK TO THIS
-    %if strcmp(get(han.abr_panel,'Box'),'on')
-        %firstPic=max(ParseInputPicString_V2(abr_Stimuli.abr_pic))+1;
-        xxx = ABRfreqs(ParseInputPicString_V2(abr_Stimuli.abr_pic));
-        xx = xxx(1:end-1); %Remove last pt which is next freq
-        avgx = mean(xx); %all pts should have same value
-        set(abr_FIG.push.freq500,'Value',0);        
-        set(abr_FIG.push.freq1k,'Value',0);
-        set(abr_FIG.push.freq2k,'Value',0);
-        set(abr_FIG.push.freq4k,'Value',0);
-        set(abr_FIG.push.freq8k,'Value',0);
-        set(abr_FIG.push.freqClick,'Value',0);
-        if isequaln(freq,500)
-            set(abr_FIG.push.freq1k,'Value',1);
-        end
-        if isequaln(freq,1000)
-            set(abr_FIG.push.freq2k,'Value',1);
-        end
-        if isequaln(freq,2000)
-            set(abr_FIG.push.freq4k,'Value',1);
-        end
-        if isequaln(freq,4000)
-            set(abr_FIG.push.freq8k,'Value',1);
-        end
-        if isequaln(freq,8000)
-            set(abr_FIG.push.freqClick,'Value',1);
-        end
-        if isequaln(freq,0)
-            set(abr_FIG.push.freq500,'Value',1);
-        end
-        if isequaln(avgx,xx(1))
- 
-            if ~isnan(avgx) %NaN is last element
-                freqNOW1 = find(freqORDER==avgx);
-                freqNOW = freqORDER(freqNOW1);
-                freqNEXT = freqORDER(freqNOW1+1);
-            elseif isnan(avgx) %circle back!
-               freqNEXT = freqORDER(1);
-            end
-            
-            if ~isnan(freqNEXT)
-                ABRfreqsNEXT = find(ABRfreqs==freqNEXT);
-            elseif isnan(freqNEXT)
-                ABRfreqsNEXT = find(isnan(ABRfreqs));
-            end
-            ABRpicsNEXT = ABRpics(ABRfreqsNEXT);
-        end
-    firstPic = min(ABRpicsNEXT);
-    if (ABRpicsNEXT(1)+(length(ABRpicsNEXT)-1)) ~= ABRpicsNEXT(end)
-        m = 2;
-        if (ABRpicsNEXT(1)+1) ~= ABRpicsNEXT(2)
-            for i = 1:length(ABRpicsNEXT)
-                if (ABRpicsNEXT(i)+1) == ABRpicsNEXT(i+1)
-                    firstPic = ABRpicsNEXT(i);
-                    lastPic = ABRpicsNEXT(end);
-                    break
-                end
-            end
-        else
-            for i = 1:length(ABRpicsNEXT)
-                if (ABRpicsNEXT(i)+1) ~= ABRpicsNEXT(m)
-                    lastPic = ABRpicsNEXT(i);
-                    break
-                end
-                m = m + 1;
-            end
-        end
-    else
-        lastPic = max(ABRpicsNEXT);
-    end
-    new_value=[num2str(firstPic) '-' num2str(lastPic)];
-    set(abr_FIG.parm_txt(2),'string',upper(new_value));
-    abr_Stimuli.abr_pic = new_value;
-    clear global 'replot'
-    zzz2;
-    set(han.peak_panel,'Box','on');
-    set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
-    
 elseif strcmp(command_str,'directory')
     abr_Stimuli.dir = get_directory;
-    %TODO JB: Find inactive freqs and disable inactive freq buttons
     TEMPdir=dir('*ABR*.mat');
     while isempty(TEMPdir)
-        set(abr_FIG.dir_txt,'string','Select Directory');
+        set(abr_FIG.dir_txt,'string','Select Directory','Color','r');
         beep
         uiwait(warndlg('ABR Files Cannot Be Found in Current Directory. Please, Select a New Directory','ERROR','modal'));
         abr_Stimuli.dir = get_directory;
@@ -306,7 +232,7 @@ elseif strcmp(command_str,'change_weights')
     
 elseif strcmp(command_str,'peak1')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('P',1);
+        peak2('w',1);
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -314,7 +240,7 @@ elseif strcmp(command_str,'peak1')
     
 elseif strcmp(command_str,'trou1')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('N',1)
+        peak2('n',1)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -322,7 +248,7 @@ elseif strcmp(command_str,'trou1')
     
 elseif strcmp(command_str,'peak2')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('P',2)
+        peak2('w',2)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -330,7 +256,7 @@ elseif strcmp(command_str,'peak2')
     
 elseif strcmp(command_str,'trou2')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('N',2)
+        peak2('n',2)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -338,7 +264,7 @@ elseif strcmp(command_str,'trou2')
     
 elseif strcmp(command_str,'peak3')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('P',3)
+        peak2('w',3)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -346,7 +272,7 @@ elseif strcmp(command_str,'peak3')
     
 elseif strcmp(command_str,'trou3')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('N',3)
+        peak2('n',3)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -354,7 +280,7 @@ elseif strcmp(command_str,'trou3')
     
 elseif strcmp(command_str,'peak4')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('P',4)
+        peak2('w',4)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -362,7 +288,7 @@ elseif strcmp(command_str,'peak4')
     
 elseif strcmp(command_str,'trou4')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('N',4)
+        peak2('n',4)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -370,7 +296,7 @@ elseif strcmp(command_str,'trou4')
     
 elseif strcmp(command_str,'peak5')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('P',5)
+        peak2('w',5)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -378,53 +304,11 @@ elseif strcmp(command_str,'peak5')
     
 elseif strcmp(command_str,'trou5')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('N',5)
+        peak2('n',5)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
-
-    
-%elseif strcmp(command_str,'autofdind') %AUTOFIND FUNCTION HERE -- DOES NOTHING???
-    %peak1af2;
-    %set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
-
-%Commented out AR on 2/19/20 -- restructuring
-%elseif strcmp(command_str,'artifactrejection') %HG ADDED 2/5/20 -- ARTIFACT REJECTION
-    
-    %clearvars abr_AR
-    %Number of lowest levels to average
-    %n = 3;
-    
-    %Average levels -- bring this into ar function
-    %levelstoAvg = abr(:,end-n+1:end);
-    %meanLevels = mean(levelstoAvg,2);
-    
-    %Pop-up figure for sanity check
-%     figure;
-%     for r = 1:n
-%        plot(abr_time,levelstoAvg(:,r));
-%        hold on;
-%     end
-%     plot(abr_time,meanLevels(:,1),'k','LineWidth',2);
-%     title('Sanity Check - Demeaning','FontSize',14);
-%     xlabel('Time in ms', 'FontSize',12);
-%     ylabel('Amplitude in uV','FontSize',12);
-%     xlim([0 30]);
-    
-%     %Question dialog pop-up
-%     continueButton=questdlg('Would you like to continue demeaning?');
-%     if strcmp(continueButton,'Yes')
-%         %Replot waterfall after subtracting mean waveform from each
-%         close(gcf);
-%         abr_artifact_rejection(meanLevels)
-%     elseif strcmp(continueButton,'No')
-%     	close(gcf);
-%     elseif strcmp(continueButton,'Cancel')
-%     	return
-%     end
-    
-    %set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
 
 %PRINT
 elseif strcmp(command_str,'print')
@@ -459,24 +343,9 @@ elseif strcmp(command_str,'print')
     currChinDir = strcat(ChinDir, fldr);
     cd(currChinDir)
     
-%     curChinDir1= strrep(strcat('Q',num2str(animal),'_',hearingStatus,'_',date, filesep), '-', '_');
-%     curChinDir = strcat(abr_out_dir,curChinDir1);
-%     
-%     if ~isdir(curChinDir)
-%         mkdir(curChinDir);
-%     end
-%     
-%     %HG ADDED 9/30/19
-%     %Make sure saving is done in correct folder
-%     cd(curChinDir)
-    
     if freq~=0 %HG EDITED 9/30/19
-        %fName= strrep(strcat(curChinDir, 'Q',num2str(animal),'_',hearingStatus,'_', num2str(freq), 'Hz','_',date), '-', '_');
-        %fName= strrep(horzcat(curChinDir, 'Q',num2str(animal),'_',hearingStatus,'_', num2str(freq), 'Hz','_',date), '-', '_');
         fName= strrep(horzcat('Q',num2str(animal),'_',hearingStatus,'_', num2str(freq), 'Hz','_',date), '-', '_');
     else
-        %fName= strrep(strcat(curChinDir, 'Q',num2str(animal),'_',hearingStatus,'_', 'click','_',date), '-', '_');
-        %fName= strrep(horzcat(curChinDir, 'Q',num2str(animal),'_',hearingStatus,'_', 'click','_',date), '-', '_');
         fName= strrep(horzcat('Q',num2str(animal),'_',hearingStatus,'_', 'click','_',date), '-', '_');
     end
     
@@ -489,13 +358,6 @@ elseif strcmp(command_str,'print')
     figure(22); set(gcf,'Units','normalized','Position',[0.5 0.5 0.2 0.1])
     text(0,0,['File printed as tiff:' filename])
     axis off; pause(0.5); close(22);
-    
-    % % % %     set(gcf,'PaperOrientation','Landscape','PaperPosition',[0 0 11 8.5]);
-    % % % %     if ispc
-    % % % %         print('-dwinc','-r200');
-    % % % %     else
-    % % % %         print('-PNeptune','-dpsc','-r200','-noui');
-    % % % %     end
 
 %SAVE -- pressing push button "Save as File"
 elseif strcmp(command_str,'file')
