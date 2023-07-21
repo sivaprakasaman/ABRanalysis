@@ -7,7 +7,7 @@ function abr_analysis_HL(command_str,parm_num)
 %This function computes an ABR threshold based on series of AVERAGER files.
 
 global paramsIN abr_FIG abr_Stimuli abr_root_dir abr_data_dir hearingStatus animal data ...
-    han invert abr_out_dir freq date dataFolderpath viewraw temp_view
+    han invert abr_out_dir freq date dataFolderpath viewraw temp_view updated_data
 
 disp('in abr_analysis_HL.m')
 
@@ -26,9 +26,10 @@ if nargin < 1
         0.3010    0.7450    0.9330;
         0.6350    0.0780    0.1840; ];
     set(groot,'defaultAxesColorOrder',co);
+    
+    abr_gui_initiate; %% Makes the GUI visible
     temp_view = get(han.temp,'Value'); % should become equal to 1
 
-    abr_gui_initiate; %% Makes the GUI visible
     abr_Stimuli.dir = get_directory;
     TEMPdir=dir('*ABR*.mat');
     while isempty(TEMPdir)
@@ -168,6 +169,8 @@ elseif strcmp(command_str,'peaks')
     
 elseif strcmp(command_str,'process')
     clear global 'replot'
+    updated_data = [];
+    update_picnums_for_freqval(freq/1000) %animal,hearingStatus);
     zzz2;
     set(han.peak_panel,'Box','on');
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
@@ -365,7 +368,6 @@ elseif strcmp(command_str,'file')
         save_file2_HG;
         data.save_chk = 1;
     else 
-        %save_file2_HG;
         msgbox('Data not saved')
     end
     

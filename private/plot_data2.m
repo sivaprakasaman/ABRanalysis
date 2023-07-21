@@ -3,7 +3,7 @@
    %STILL NEED TO INPUT stop and vertLineMarker
 
     global 	data han spl attn line_width abr_Stimuli abr_time abr w upper_y_bound lower_y_bound y_shift padvoltage num thresh_mag reff AVG_reff freq ...
-        include_spl include_zscore include_w replot temp_view %abr_AR AR_marker plot_AR
+        include_spl include_zscore include_w replot temp_view updated_data
 
 
     %Clear out abr_AR if AR button NOT PRESSED
@@ -181,7 +181,8 @@
         for i=1:num
             plot(abr_time,abr(:,i)+y_shift(1,i),'-k',[abr_Stimuli.start abr_Stimuli.end],[upper_y_bound(1,i) upper_y_bound(1,i)],'-k',...
             'LineWidth',line_width)
-
+         
+            
             if ~isempty(replot) 
                 
                 ax = gca;
@@ -190,17 +191,33 @@
                     reX = replot.abrs.x(i,j+2);
                     reY = replot.abrs.y(i,j+2) + y_shift(1,i);
                     colorPT = strcat(colors2{j},'*');
-                    plot(ax, reX, reY, colorPT);
+                    plot(ax, reX, reY, colorPT,'LineWidth',1);
                      if (mod(j,2)==1) %PEAK - place above peak
-                        name = strcat('P',num2str((j+1)/2)); 
-                        text(ax,reX,reY,name,'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',8,'Color',colors2{j});
+                        name = strcat('w',num2str((j+1)/2)); 
+                        text(ax,reX,reY+0.05,name,'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',10,'Color',colors2{j});
                      else %TROUGH
-                        name = strcat('N',num2str((j)/2)); 
-                        text(ax,reX,reY,name,'HorizontalAlignment','center','VerticalAlignment','top','fontsize',8,'Color',colors2{j});
+                        name = strcat('n',num2str((j)/2)); 
+                        text(ax,reX,reY+0.05,name,'HorizontalAlignment','center','VerticalAlignment','top','fontsize',10,'Color',colors2{j});
                      end
-                         
-                end
+                end                
+            elseif ~isempty(updated_data) && updated_data.freq == freq
+                    ax = gca;
+                    colors2 = {'r','r','b','b','m','m','g','g','c','c'};
+                    for j=1:10
+                        reX = updated_data.x(j,i);
+                        reY = updated_data.y(j,i) + y_shift(1,i);
+                        colorPT = strcat(colors2{j},'*');
+                        plot(ax, reX, reY, colorPT,'LineWidth',1);
+                        if (mod(j,2)==1) %PEAK - place above peak
+                            name = strcat('w',num2str((j+1)/2));
+                            text(ax,reX,reY+0.05,name,'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',10,'Color',colors2{j});
+                        else %TROUGH
+                            name = strcat('n',num2str((j)/2));
+                            text(ax,reX,reY+0.05,name,'HorizontalAlignment','center','VerticalAlignment','top','fontsize',10,'Color',colors2{j});
+                        end
+                    end
             end
+        end
             %If ABR's exist, plot all peaks and troughs that exist
             text(abr_Stimuli.start+(abr_Stimuli.end-abr_Stimuli.start)*0.01,upper_y_bound(1,i)-0.5*padvoltage,num2str(spl(i),'%10.1f'),...
                 'fontsize',10,'horizontalalignment','left','VerticalAlignment','middle','color','b')

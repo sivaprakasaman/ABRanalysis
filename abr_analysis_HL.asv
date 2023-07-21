@@ -28,6 +28,8 @@ if nargin < 1
     set(groot,'defaultAxesColorOrder',co);
     
     abr_gui_initiate; %% Makes the GUI visible
+    temp_view = get(han.temp,'Value'); % should become equal to 1
+
     abr_Stimuli.dir = get_directory;
     TEMPdir=dir('*ABR*.mat');
     while isempty(TEMPdir)
@@ -88,12 +90,16 @@ elseif strcmp(command_str,'stimulus')
             abr_Stimuli.end = str2double(new_value);
             update_picnums_for_freqval(freq/1000);
         case 5
-            new_value = inputdlg({'Enter ABR Template Left Time Limit'},...
-            'Input: ABR Time Limit', [1 50]); 
-            new_value = new_value{1};
-            set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
-            abr_Stimuli.start_template = str2double(new_value);
-            update_picnums_for_freqval(freq/1000);
+            if temp_view == 1
+                new_value = inputdlg({'Enter ABR Template Left Time Limit'},...
+                'Input: ABR Time Limit', [1 50]); 
+                new_value = new_value{1};
+                set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
+                abr_Stimuli.start_template = str2double(new_value);
+                update_picnums_for_freqval(freq/1000);
+            else
+                uiwait(warndlg('Template Disabled. Limits Cannot Be Changed Until Template is Activated','ERROR','modal'));
+            end
         case 6
             if temp_view == 1
                 new_value = inputdlg({'Enter ABR Template Right Time Limit'},...
@@ -103,7 +109,7 @@ elseif strcmp(command_str,'stimulus')
                 set(abr_FIG.parm_txt(parm_num),'string',upper(new_value));
                 update_picnums_for_freqval(freq/1000);
             else
-                uiwait(warndlg('Template Limits Cannot Be Changed.','ERROR','modal'));
+                uiwait(warndlg('Template Disabled. Limits Cannot Be Changed Until Template is Activated','ERROR','modal'));
             end
 
         case 7
@@ -360,7 +366,6 @@ elseif strcmp(command_str,'file')
         save_file2_HG;
         data.save_chk = 1;
     else 
-        %save_file2_HG;
         msgbox('Data not saved')
     end
     
