@@ -55,6 +55,7 @@ if ~isempty(filename)
         if exist('abrs','var')
             answer_peak_save = waitbar(0,prompt_peak_save);
             pause(.5)
+            close;
             if ismember(freq,abrs.thresholds(:,1))
                 abrs.thresholds(abrs.thresholds(:,1)==freq,:)=[];
                 abrs.z.par(abrs.z.par(:,1)==freq,:)=[];
@@ -71,7 +72,8 @@ if ~isempty(filename)
                 abrs.y=[abrs.y nan(size(abrs.y,1),12-size(abrs.y,2))];
             end
             waitbar(0.5,answer_peak_save,prompt_peak_save);
-            pause(1)
+            pause(1);
+            close;
             abrs.thresholds = [abrs.thresholds; freq data.threshold data.amp_thresh -freq_level];
             abrs.z.par = [abrs.z.par; freq data.z.intercept data.z.slope];
             abrs.z.score = [abrs.z.score; freq2' spl' data.z.score' w'];
@@ -97,7 +99,8 @@ if ~isempty(filename)
         end
     elseif  ~isempty(data) %Creates new file because no file currently exists
         answer_peak_save = waitbar(0,prompt_peak_save);
-        pause(.5)
+        pause(.5);
+        close;
         abrs.thresholds = [freq data.threshold data.amp_thresh -freq_level];
         abrs.z.par = [freq data.z.intercept data.z.slope];
         abrs.z.score = [freq2' spl' data.z.score' w'];
@@ -105,7 +108,6 @@ if ~isempty(filename)
         abrs.x = [freq2' spl' data.x'];
         abrs.y = [freq2' spl' data.y'];
         abrs.waves = [freq2' spl' abr'];
-        
         file_check = dir(sprintf('*%s_v*.mat',filename2));
         [~,c] = size({file_check.name});
         if ~isempty(file_check)
@@ -123,18 +125,16 @@ if ~isempty(filename)
             save(filename_out, 'abrs');
             clear abrs;
         end
-        
         %HG ADDED 2/11/20
         abrs.AR_marker = AR_marker;   
         answer_peak_save = waitbar(0.5,prompt_peak_save);
-        pause(.5)
+        pause(.5);
+        close;
     else
         waitbar(0,sprintf('\nExiting ABR Analysis\n\nGood Bye n.n'));
         close;
         return;
     end
-waitbar(1,answer_peak_save,prompt_peak_save);
-close;
 saved_prompt = sprintf('\nFiles Saved!\n\nFilename: %s\nFolder: %s',filename_out,currChinDir);
 saved_box = waitbar(1,saved_prompt); set(get(get(saved_box, 'CurrentAxes'), 'title'), 'Interpreter', 'none');
 end

@@ -19,7 +19,7 @@ if ~isempty(data)
             ButtonName=questdlg('Would you like to save?');
             if strcmp(ButtonName,'Yes')
                 save_file2_HG;
-            elseif strcmp(ButtonName,'Cancel')
+            elseif strcmp(ButtonName,'Cancel') || strcmp(ButtonName,'No')
                 replot_check = 3;
                 return;
             end
@@ -31,7 +31,7 @@ if ~isempty(data)
             ButtonName=questdlg('Would you like to save?');
             if strcmp(ButtonName,'Yes')
                 save_file2_HG;
-            elseif strcmp(ButtonName,'Cancel')
+            elseif strcmp(ButtonName,'Cancel') || strcmp(ButtonName,'No')
                 replot_check = 3;
                 return;
             end

@@ -118,7 +118,16 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
             stop = 1;
             cla;
             plot_data2(stop,vertLineMarker);
+            cor_sel = 0;
             [x,y,marker] = ginput(1);
+            while cor_sel == 0             
+                if y>lower_y_bound(1,level_idx) && y<upper_y_bound(1,level_idx)
+                    cor_sel = 1;
+                else
+                    uiwait(warndlg(sprintf('Peak was selected at a different sound level. Please, replace peak selection at %d dB SPL',spl(level_idx)),'ERROR'));
+                    [x,y,marker] = ginput(1);
+                end
+            end
         elseif contains(answer_peak_cur,'Exit')
             exitwhile = 1;
         end
@@ -484,8 +493,11 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
                     vertLineMarker = avgLine;
                 end
             end
-
-
+            if ~isempty(replot)
+                replot.abrs.x(level_idx,peak_idx+2) = data.x(peak_idx,level_idx);
+                replot.abrs.y(level_idx,peak_idx+2) = data.y(peak_idx,level_idx);
+                data.y_forfig =  replot.abrs.y(:,3:end)' + y_shift;
+            end
             %Close peak fig
             close(hfig);
             %Plots optimized peak
@@ -521,9 +533,5 @@ set(abr_FIG.push.trou4,'Value',0);
 set(abr_FIG.push.peak5,'Value',0);
 set(abr_FIG.push.trou5,'Value',0);
 %AR_marker = 0;
-if ~isempty(replot) && replot_check == 1
-    replot.abrs.x(level_idx,peak_idx+2) = data.x(peak_idx,level_idx);
-    replot.abrs.y(level_idx,peak_idx+2) = data.y(peak_idx,level_idx);
-end
 plot_data2(stop,vertLineMarker);
 end

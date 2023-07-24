@@ -1,6 +1,6 @@
 function replot_data
 
-global 	abr_out_dir freq replot animal abr_Stimuli q_fldr check_files type id replot_check command_str exitwhile
+global 	abr_out_dir freq replot animal abr_Stimuli q_fldr check_files type id replot_check command_str exitwhile abr_FIG
 
 
 q_fldr = strcat('Q', num2str(animal));
@@ -51,7 +51,8 @@ else
         replot.abrs.y(replot.abrs.y(:,1)~=freq,:)=[];
         replot.abrs.waves(replot.abrs.waves(:,1)~=freq,:)=[];
         zzz2;
-        plot_data2(1,8);
+        set(abr_FIG.parm_txt(9),'string',replotfile,'Color',[0.4660 0.6740 0.1880]);
+
     else
         msgbox(sprintf('Unable to plot previous peaks due to incompatible frequency selection. Try again by plotting %.1f kHz instead',str2num(sel_freq)/1000));
     end

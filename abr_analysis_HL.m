@@ -382,6 +382,7 @@ elseif strcmp(command_str,'close')
     
 elseif strcmp(command_str,'freq_proc500')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -390,6 +391,7 @@ elseif strcmp(command_str,'freq_proc500')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc1k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq500,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -398,6 +400,7 @@ elseif strcmp(command_str,'freq_proc1k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc2k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq500,'Value',0);
@@ -406,6 +409,7 @@ elseif strcmp(command_str,'freq_proc2k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc4k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -414,6 +418,7 @@ elseif strcmp(command_str,'freq_proc4k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc8k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -422,6 +427,7 @@ elseif strcmp(command_str,'freq_proc8k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_procClick')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);

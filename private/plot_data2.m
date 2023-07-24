@@ -5,7 +5,7 @@ function plot_data2(stop,vertLineMarker)
 global 	data han spl attn line_width abr_Stimuli abr_time abr w upper_y_bound lower_y_bound y_shift padvoltage num thresh_mag reff AVG_reff freq ...
     include_spl include_zscore include_w replot temp_view replot_check marker level_idx peak_idx
 
-if ~isempty(replot) && replot_check == 1
+if ~isempty(replot)
     data.threshold = replot.abrs.thresholds(2);
     data.z.score = replot.abrs.z.score(:,3)';
     data.z.intercept = replot.abrs.z.par(2);
@@ -14,6 +14,7 @@ if ~isempty(replot) && replot_check == 1
     data.amp = flip(replot.abrs.amp(:,3))';
     data.x = replot.abrs.x(:,3:end)';
     data.y = replot.abrs.y(:,3:end)';
+
 end
 
 %clear out contents of all axes
@@ -29,6 +30,7 @@ end
 
 %% peak panel
 axes(han.peak_panel);
+cla(han.peak_panel);
 plot(data.x(1,:),data.y_forfig(1,:),'r+',data.x(3,:),data.y_forfig(3,:),'b+',...
     data.x(5,:),data.y_forfig(5,:),'m+',data.x(7,:),data.y_forfig(7,:),'k+',data.x(9,:),data.y_forfig(9,:),'c+','LineWidth',line_width)
 text(data.x(1,:),data.y_forfig(1,:),'1','FontSize',10,'Color','r','horizontalalignment','left','VerticalAlignment','bottom')
@@ -204,6 +206,6 @@ if exist('vertLineMarker')
         [d, ix] = min(abs(abr_time - msTime));
         line([abr_time(ix), abr_time(ix)],get(gca, 'ylim'),'Color','red','LineStyle','-.');
     end
-end
+end    
 end
 

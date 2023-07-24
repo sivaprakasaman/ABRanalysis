@@ -5,8 +5,10 @@ ax2  = cell2struct(cell(1,3),{'axes','xlab','ylab'},2);
 abrs  = cell2struct(cell(1,10),{'abr1','abr2','abr3','abr4','abr5','abr6','abr7','abr8','abr9','abr10'},2);
 abr_FIG = struct('handle',[],'push',push,'ax1',ax1,'ax2',ax2,'abrs',abrs,'parm_text',[],'dir_text',[]);
 
-abr_Stimuli = struct('cal_pic','Select Calibration', ...
-	'abr_pic','TBD', ...
+abr_Stimuli = struct(...
+    'filename_out', '',...
+    'cal_pic','Select Calibration', ...
+	'abr_pic','', ...
 	'start', 0.00, ...
 	'end',20.00, ...
 	'start_template', 2.50, ...
@@ -98,7 +100,7 @@ axes('Position',[0 0.07 0.35 0.4]);
 axis('off');
 text(.2,.65-shift,'Directory:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 text(.2,.58-shift,'Calibration File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.43,'File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,0.70,'File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 text(.2,.43-shift,'ABR Files:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 text(.2,.37-shift,'Zoom Left (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 text(.2,.32-shift,'Zoom Right (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
@@ -114,9 +116,8 @@ abr_FIG.parm_txt(5)  = text(.8,.24-shift,num2str(abr_Stimuli.start_template),'fo
 abr_FIG.parm_txt(6)  = text(.8,.19-shift,num2str(abr_Stimuli.end_template),  'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',6);');
 abr_FIG.parm_txt(7)  = text(.8,.09-shift,num2str(abr_Stimuli.num_templates),     'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',7);');
 abr_FIG.dir_txt = text(.8,.65-shift,abr_Stimuli.dir,'fontsize',10,'color','r','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''directory'');','Interpreter','none');
-abr_FIG.parm_txt(8) = text(.8,.09-shift,num2str(abr_Stimuli.num_templates),     'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',7);');
-abr_FIG.parm_txt(9) = text(.8,0.9,'TBD','fontsize',10,'color','k','horizontalalignment','right','VerticalAlignment','middle');
-
+abr_FIG.parm_txt(8) = text(.8,0.09-shift,num2str(abr_Stimuli.num_templates),     'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',7);');
+abr_FIG.parm_txt(9) = text(.8,0.70,abr_Stimuli.filename_out,'fontsize',10,'color','b','horizontalalignment','right','VerticalAlignment','middle','Interpreter','none');
 set(abr_FIG.handle,'Userdata',struct('handles',abr_FIG));
 
 %% Added by SP
