@@ -19,9 +19,9 @@ abr_Stimuli = struct('cal_pic','Select Calibration', ...
 if ~exist('abr_Stimuli','var')||~isfield(abr_Stimuli, 'cal_pic')
     instruct_error;
 end
-
+shift = 0.05;
 abr_FIG.handle = figure('NumberTitle','off','Name','ABR peaks','Units','normalized','Visible','on',...
-    'position',[0 0.03 1 0.92],'outerposition',[0 0 1 1],'CloseRequestFcn','abr_analysis_HL(''close'');');
+    'position',[0 0.03-shift 1 0.92],'outerposition',[0 0 1 1],'CloseRequestFcn','abr_analysis_HL(''close'');');
 % colordef none;
 whitebg('w');
 
@@ -47,8 +47,8 @@ abr_FIG.push.refdata = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''re
 han.invert = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''invert'');','style','checkbox','Units','normalized','position',[0.413 0.14 0.0630 .03],'String','Invert','Value',0,'BackgroundColor',[0.8549 0.8549 0.8549]);
 
 %template checkbox
-han.temp = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''temp'');','style','checkbox','Units','normalized','position',[0.413 0.14 0.0630 .03],'String','Invert','Value',0,'BackgroundColor',[0.8549 0.8549 0.8549]);
-
+han.temp = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''temp'');','style','checkbox','Units','normalized','position',[0.07 0.08-shift 0.0630 .03],'String','Template','Value',0,'BackgroundColor',[0.8549 0.8549 0.8549]);
+set(han.temp,'Value',1);
 %Next push button
 %abr_FIG.push.nextPics = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''nextPics'');','style','pushbutton','Units','normalized','position',[0.3 0.32 0.028 0.025],'string','Next');
 
@@ -96,24 +96,26 @@ text(0.5+0.92*0.33,0.945,'(attn)','FontSize',10,'horizontalalignment','left','Ve
 
 axes('Position',[0 0.07 0.35 0.4]);
 axis('off');
-text(.2,.65,'Directory:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.58,'Calibration File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.65-shift,'Directory:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.58-shift,'Calibration File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.43,'File:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.43-shift,'ABR Files:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.37-shift,'Zoom Left (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.32-shift,'Zoom Right (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.24-shift,'Template Left (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.19-shift,'Template Right (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+text(.2,.09-shift,'Number of Templates:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
 
-text(.2,.43,'ABR Files:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.37,'Zoom Left (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.32,'Zoom Right (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.24,'Template Left (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.19,'Template Right (ms):','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-text(.2,.09,'Number of Templates:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-
-abr_FIG.parm_txt(1)  = text(.8,.58,num2str(abr_Stimuli.cal_pic),   'fontsize',10,'color','r','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',1);');
-abr_FIG.parm_txt(2)  = text(.8,.43,num2str(abr_Stimuli.abr_pic),   'fontsize',10,'color','k','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',2);');
-abr_FIG.parm_txt(3)  = text(.8,.37,num2str(abr_Stimuli.start),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',3);');
-abr_FIG.parm_txt(4)  = text(.8,.32,num2str(abr_Stimuli.end),  'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',4);');
-abr_FIG.parm_txt(5)  = text(.8,.24,num2str(abr_Stimuli.start_template),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',5);');
-abr_FIG.parm_txt(6)  = text(.8,.19,num2str(abr_Stimuli.end_template),  'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',6);');
-abr_FIG.parm_txt(7)  = text(.8,.09,num2str(abr_Stimuli.num_templates),     'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',7);');
-abr_FIG.dir_txt = text(.8,.65,abr_Stimuli.dir,'fontsize',10,'color','r','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''directory'');','Interpreter','none');
+abr_FIG.parm_txt(1)  = text(.8,.58-shift,num2str(abr_Stimuli.cal_pic),   'fontsize',10,'color','r','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',1);');
+abr_FIG.parm_txt(2)  = text(.8,.43-shift,num2str(abr_Stimuli.abr_pic),   'fontsize',10,'color','k','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',2);');
+abr_FIG.parm_txt(3)  = text(.8,.37-shift,num2str(abr_Stimuli.start),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',3);');
+abr_FIG.parm_txt(4)  = text(.8,.32-shift,num2str(abr_Stimuli.end),  'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',4);');
+abr_FIG.parm_txt(5)  = text(.8,.24-shift,num2str(abr_Stimuli.start_template),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',5);');
+abr_FIG.parm_txt(6)  = text(.8,.19-shift,num2str(abr_Stimuli.end_template),  'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',6);');
+abr_FIG.parm_txt(7)  = text(.8,.09-shift,num2str(abr_Stimuli.num_templates),     'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',7);');
+abr_FIG.dir_txt = text(.8,.65-shift,abr_Stimuli.dir,'fontsize',10,'color','r','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''directory'');','Interpreter','none');
+abr_FIG.parm_txt(8) = text(.8,.09-shift,num2str(abr_Stimuli.num_templates),     'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',7);');
+abr_FIG.parm_txt(9) = text(.8,.0.9,['TBD'],'fontsize',10,'color','k','horizontalalignment','right','VerticalAlignment','middle');
 
 set(abr_FIG.handle,'Userdata',struct('handles',abr_FIG));
 
@@ -134,9 +136,8 @@ abr_FIG.push.freq8k = uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''fre
     [freq_load.x 0.14 freq_load.width freq_load.height],'string','8 kHz');
 abr_FIG.push.freqClick= uicontrol(abr_FIG.handle,'callback','abr_analysis_HL(''freq_procClick'',0);','style','togglebutton','Units','normalized','position',...
     [freq_load.x 0.105 freq_load.width freq_load.height],'string','Click');
-
-text(.2,.5,'Max dB SPL:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
-abr_FIG.parm_txt(8)  = text(.8,.5,num2str(abr_Stimuli.maxdB2analyze),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',8);');
+text(.2,.5-shift,'Max dB SPL:','fontsize',10,'color','k','horizontalalignment','left','VerticalAlignment','middle');
+abr_FIG.parm_txt(8)  = text(.8,.5-shift,num2str(abr_Stimuli.maxdB2analyze),'fontsize',10,'color','b','horizontalalignment','right','buttondownfcn','abr_analysis_HL(''stimulus'',8);');
 
 %%
 axes('Position',[0.50 0.07 0.33 0.86]); 

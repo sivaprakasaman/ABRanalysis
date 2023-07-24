@@ -7,8 +7,8 @@ function abr_analysis_HL(command_str,parm_num)
 %This function computes an ABR threshold based on series of AVERAGER files.
 
 global paramsIN abr_FIG abr_Stimuli abr_root_dir abr_data_dir hearingStatus animal data ...
-    han invert abr_out_dir freq date dataFolderpath viewraw temp_view updated_data
-
+    han invert abr_out_dir freq date dataFolderpath viewraw temp_view cur_data q_fldr check_files ...
+    replot_check
 disp('in abr_analysis_HL.m')
 
 % abr_root_dir, abr_data_dir, abr_out_dir must be set in abr_setup, and
@@ -29,6 +29,7 @@ if nargin < 1
     
     abr_gui_initiate; %% Makes the GUI visible
     temp_view = get(han.temp,'Value'); % should become equal to 1
+    cur_data = [];
 
     abr_Stimuli.dir = get_directory;
     TEMPdir=dir('*ABR*.mat');
@@ -162,6 +163,7 @@ elseif strcmp(command_str,'directory')
     end
     
 elseif strcmp(command_str,'peaks')
+    clear global 'replot'
     replot_data;
     set(han.peak_panel,'Box','on');
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
@@ -169,7 +171,6 @@ elseif strcmp(command_str,'peaks')
     
 elseif strcmp(command_str,'process')
     clear global 'replot'
-    updated_data = [];
     update_picnums_for_freqval(freq/1000) %animal,hearingStatus);
     zzz2;
     set(han.peak_panel,'Box','on');
@@ -373,8 +374,9 @@ elseif strcmp(command_str,'file')
     
 elseif strcmp(command_str,'edit') % added by GE 15Apr2004 %NEED THIS? -HG
     
-elseif strcmp(command_str,'close') %NEED THIS? -HG
-    update_params3;
+elseif strcmp(command_str,'close')
+    save_file2_HG;
+    data.save_chk = 1;
     closereq;
     cd(fileparts(abr_root_dir(1:end-1)));
     

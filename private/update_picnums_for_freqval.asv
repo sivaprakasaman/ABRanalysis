@@ -1,6 +1,6 @@
 function update_picnums_for_freqval(freq_val_kHz)%,animal,hearingStatus)
 
-global abr_FIG abr_Stimuli abr_data_dir data han animal hearingStatus dataFolderpath viewraw dimcheck replot_check
+global abr_FIG abr_Stimuli abr_data_dir data han animal hearingStatus dataFolderpath viewraw dimcheck
 
 %% Check if checkbox is already dim
 if dimcheck == 1
@@ -20,8 +20,8 @@ if ~isempty(data)
             if strcmp(ButtonName,'Yes')
                 save_file2_HG;
             elseif strcmp(ButtonName,'Cancel')
-                replot_check = 3;
                 return;
+                replot_check = 3;
             end
         else
             data.save_chk = 0;
@@ -32,7 +32,6 @@ if ~isempty(data)
             if strcmp(ButtonName,'Yes')
                 save_file2_HG;
             elseif strcmp(ButtonName,'Cancel')
-                replot_check = 3;
                 return;
             end
         end

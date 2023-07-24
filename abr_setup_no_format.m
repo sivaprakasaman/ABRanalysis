@@ -4,17 +4,19 @@ function abr_setup_no_format
 
 global abr_root_dir abr_data_dir abr_out_dir 
 
-addpath(genpath(pwd)) %ENTER the path of the directory containing your 'ABRAnalysis' folder
-rmpath(genpath('Trash'));
+%addpath(genpath(pwd)) 
+%rmpath(genpath('Trash'));
 
-addpath(genpath('/Users/fernandoaguileradealba/Desktop/AS-2023_07_10-Q410_TTS_EFR_ABR_Check')) %ENTER the path of the directory containing your project folder
-project_DIR='/Users/fernandoaguileradealba/Desktop'; %ENTER the path of your project folder
-
-code_DIR=[pwd,'/']; %ENTER the path of your 'ABRAnalysis' folder
-
-abr_root_dir = [code_DIR];
-abr_data_dir = [project_DIR];
-abr_out_dir = [project_DIR '/Analysis'];
+% Directory containing your data folder
+uiwait(warndlg('Please, select folder containing data to analyze','Select Data Folder'));
+abr_data_dir = uigetdir;
+addpath(genpath(abr_data_dir)) % directory containing your project folder
+uiwait(warndlg('Please, select folder to save files','Select Saving Folder'));
+abr_out_dir = uigetdir;% directory containing ABR Analysis folder
+abr_out_dir = [abr_out_dir '/Analysis'];
+uiwait(warndlg('Please, select folder containing ABR analysis scripts','Select ABR Analysis Folder'));
+abr_root_dir = uigetdir;
+abr_root_dir = [abr_root_dir,'/']; %ENTER the path of your 'ABRAnalysis' folder
 
 addpath([abr_root_dir])
 

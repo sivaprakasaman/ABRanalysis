@@ -2,33 +2,22 @@ function save_file2
 
 global num freq spl animal date freq_level data abr ABRmag w hearingStatus abr_out_dir abr_Stimuli ...
     AR_marker
-%abr_AR AR_marker
+today = datetime('now');
+today_date = datestr(today);
+today_date = today_date(1:11);
+prompt_peak_save = sprintf('\nSaving File...\n\nSubject: Q%s \nStimulus: %.1f kHz\n',animal, freq/1000);
 
 filename = strcat('Q',num2str(animal),'_',hearingStatus,'_',date);
-figure(22); set(gcf,'Units','normalized','Position',[0.5 0.5 0.2 0.1])
-text(0,0,['saving to file:' filename])
-axis off; pause(0.5); close(22);
-
-% curChinDir1= strrep(strcat('Q',num2str(animal),'_',hearingStatus,'_',date, filesep), '-', '_');
-% curChinDir = strcat(abr_out_dir,curChinDir1);
-% if ~isdir(curChinDir)
-%     mkdir(curChinDir);    
-% end
-
 q_fldr = strcat('Q', num2str(animal));
-% if strcmp('pre',regexp(abr_Stimuli.dir,'pre','match')) == 1
-%     type = 'pre';
-% elseif strcmp('post',regexp(abr_Stimuli.dir,'post','match')) == 1
-%     type = 'post';
-% else
-%     type = 'none';
-% end
 ChinDir = [abr_out_dir,'/', q_fldr];
 
 if ~isdir(ChinDir)
     mkdir(ChinDir);
 end
+
 cd(ChinDir)
+
+
 
 x = dir;
 for i = 1:length(x)
@@ -40,14 +29,10 @@ for i = 1:length(x)
 end
 currChinDir = strcat(ChinDir, fldr);
 cd(currChinDir)
-
 if ~isempty(filename)
-    %filename2 = char(strcat(curChinDir,filename,'.mat'));
     
     %HG ADDED 9/30/19
-    %Make sure saving is done in correct folder
-%     cd(curChinDir)
-   
+    %Make sure saving is done in correct folder   
     if freq~=0 %HG EDITED 9/30/19
         filename2= strrep(horzcat('Q',num2str(animal),'_',hearingStatus,'_', num2str(freq), 'Hz','_',date), '-', '_');
     else
@@ -55,11 +40,21 @@ if ~isempty(filename)
     end
     
     freq2=ones(1,num)*freq; replaced=0;
-    temp_file = dir(strcat(filename2,'.mat'));
-    temp_file = temp_file.name;
+%     file_check = sprintf('*%s_v.mat*',filename2);
+    file_check = sprintf('*%s.mat*',filename2);
+    temp_file = dir([filename2 '_v' file_check]);
+    if isempty(temp_file)
+        temp_file = [];
+    else
+        temp_file = temp_file.name;
+    end
+
+    
     if exist(filename2,'file') || exist(temp_file,'file') %Replaces file if file already exists
         load(filename2)
         if exist('abrs','var')
+            answer_peak_save = waitbar(0,prompt_peak_save);
+            pause(.5)
             if ismember(freq,abrs.thresholds(:,1))
                 abrs.thresholds(abrs.thresholds(:,1)==freq,:)=[];
                 abrs.z.par(abrs.z.par(:,1)==freq,:)=[];
@@ -75,7 +70,8 @@ if ~isempty(filename)
                 abrs.x=[abrs.x nan(size(abrs.x,1),12-size(abrs.x,2))];
                 abrs.y=[abrs.y nan(size(abrs.y,1),12-size(abrs.y,2))];
             end
-            
+            waitbar(0.5,answer_peak_save,prompt_peak_save);
+            pause(1)
             abrs.thresholds = [abrs.thresholds; freq data.threshold data.amp_thresh -freq_level];
             abrs.z.par = [abrs.z.par; freq data.z.intercept data.z.slope];
             abrs.z.score = [abrs.z.score; freq2' spl' data.z.score' w'];
@@ -88,17 +84,7 @@ if ~isempty(filename)
             abrs.AR_marker = AR_marker;
             
             save(filename2, 'abrs','-append'); clear abrs;
-            if replaced==0
-                figure(22); set(gcf,'Units','normalized','Position',[0.5 0.5 0.2 0.1])
-                text(0,0,'data added to ABR field')
-                axis off; pause(0.5); close(22);
-                
-            else
-                figure(22); set(gcf,'Units','normalized','Position',[0.5 0.5 0.2 0.1])
-                text(0,0,'data replaced in ABR field')
-                axis off; pause(0.5); close(22);
-                
-            end
+            filename_out = [filename2 '_' today_date];
         else
             abrs.thresholds = [freq data.threshold data.amp_thresh -freq_level];
             abrs.z.par = [freq data.z.intercept data.z.slope];
@@ -108,12 +94,10 @@ if ~isempty(filename)
             abrs.y = [freq2' spl' data.y'];
             abrs.waves = [freq2' spl' abr'];
             save(filename2, 'abrs','-append'); clear abrs;
-            figure(22); set(gcf,'Units','normalized','Position',[0.5 0.5 0.2 0.1])
-            text(0,0,'ABR field added')
-            axis off; pause(0.5); close(22);
-            
         end
-    else %Creates new file because no file currently exists
+    elseif  ~isempty(data) %Creates new file because no file currently exists
+        answer_peak_save = waitbar(0,prompt_peak_save);
+        pause(.5)
         abrs.thresholds = [freq data.threshold data.amp_thresh -freq_level];
         abrs.z.par = [freq data.z.intercept data.z.slope];
         abrs.z.score = [freq2' spl' data.z.score' w'];
@@ -122,24 +106,35 @@ if ~isempty(filename)
         abrs.y = [freq2' spl' data.y'];
         abrs.waves = [freq2' spl' abr'];
         
-        if exist(strcat(filename2, '.mat'),'file')
-            filename3 = strcat(filename2, '_old');
-            file_num = 2;
-            while exist(strcat(filename3, '.mat'),'file')
-                filename3 = strcat(filename3, num2str(file_num));
+        file_check = dir(sprintf('*%s_v*.mat',filename2));
+        [~,c] = size({file_check.name});
+        if ~isempty(file_check)
+            file_num = c + 1;
+            filename3 = sprintf('%s_v%d',filename2,file_num);
+            while exist(sprintf('*%s_v*.mat',filename2),'file')
+                filename3 = strcat(filename2, '_v', file_num);
                 file_num = file_num + 1;
             end
-            copyfile(strcat(filename2, '.mat'), strcat(filename3, '.mat'));
+            filename_out = [filename3 '_' today_date];
+            save(filename_out,'abrs');
+            filename_out = [filename3 '_' today_date];
+        elseif ~exist(strcat(filename2, '.mat'),'file')
+            filename_out = [filename2 '_v1_' today_date];
+            save(filename_out, 'abrs');
+            clear abrs;
         end
         
         %HG ADDED 2/11/20
-        abrs.AR_marker = AR_marker;
-        
-        save(filename2, 'abrs'); clear abrs;
-        figure(22); set(gcf,'Units','normalized','Position',[0.5 0.5 0.2 0.1])
-        text(0,0,'New file created')
-        axis off; pause(0.5); close(22);
-        
-
+        abrs.AR_marker = AR_marker;   
+        answer_peak_save = waitbar(0.5,prompt_peak_save);
+        pause(.5)
+    else
+        waitbar(0,sprintf('\nExiting ABR Analysis\n\nGood Bye n.n'));
+        close;
+        return;
     end
+waitbar(1,answer_peak_save,prompt_peak_save);
+close;
+saved_prompt = sprintf('\nFiles Saved!\n\nFilename: %s\nFolder: %s',filename_out,currChinDir);
+saved_box = waitbar(1,saved_prompt); set(get(get(saved_box, 'CurrentAxes'), 'title'), 'Interpreter', 'none');
 end

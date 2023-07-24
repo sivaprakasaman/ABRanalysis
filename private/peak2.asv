@@ -6,7 +6,7 @@ function peak2(type,id)
 %In order to add in vertical line 3 ms after P1
 
 
-global abr_Stimuli num abr upper_y_bound lower_y_bound y_shift data abr_time abr padvoltage AR_marker abr_FIG spl replot line_width updated_data
+global abr_Stimuli num abr upper_y_bound lower_y_bound y_shift data abr_time abr padvoltage AR_marker abr_FIG spl replot line_width freq replot_check marker level_idx peak_idx type id
 
 warning off;
 
@@ -39,6 +39,11 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     maxloops = 10; %correlates to count
     maxpeaks = 30; %correlates to pks
     maxtime = 30;
+
+    if replot_check == 3
+  
+    end
+
     if (type == 'w')
         invert = 1;
     else %type N
@@ -56,23 +61,22 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     %Find dB SPL plot - HG added
     for i=1:num
         if y>lower_y_bound(1,i) && y<upper_y_bound(1,i)
-            index=i;
+            level_idx = i;
         end
     end
 
 
     % Check peaks selected in selected peak file
     if type == 'w'
-        i = id*2-1;
+        peak_idx = id*2-1;
     end
     if type == 'n'
-        i = id*2;
+        peak_idx = id*2;
     end
+    
     if ~isempty(replot)
         peaks_sel = replot.abrs.x(:,3:end)';
-        if ~isnan(peaks_sel(i,index))
-            replot_check = 1;
-        elseif ~isnan(data.x(i,index))
+        if ~isnan(peaks_sel(peak_idx,level_idx)) || ~isnan(data.x(peak_idx,level_idx))
             replot_check = 1;
         else
             replot_check = 0;
@@ -81,39 +85,39 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
 
     % Check if peak has been selected before in current plot or
     % peak file selected
-    if isnan(data.x(i,index)) && replot_check == 0 && marker == 1 
+    if isempty(data.x(peak_idx,level_idx)) && replot_check == 0 && marker == 1 
         exitwhile = 0;
-    elseif ~isnan(data.x(i,index)) && marker == 1
-        prompt_peak_cur = sprintf('The %s%d peak has already been selected at %d dB SPL during this session. Would you like to replace peak selection?',type, id, spl(index));
+    elseif ~isempty(data.x(peak_idx,level_idx)) && replot_check == 0 && marker == 1
+        prompt_peak_cur = sprintf('The %s%d peak has already been selected at %d dB SPL during this session. Would you like to replace peak selection?',type, id, spl(level_idx));
         answer_peak_cur = questdlg(prompt_peak_cur,'ERROR: Multiple Peak Selection', 'Replace Selection', 'Exit', 'I dont know');
         if contains(answer_peak_cur,'Replace Selection')
-            data.x(i,index) = NaN;
-            data.y(i,index) = NaN;
-            updated_data = data;
+            data.x(peak_idx,level_idx) = NaN;
+            data.y(peak_idx,level_idx) = NaN;
             exitwhile = 0;
             stop = 1;
             cla;
             plot_data2(stop,vertLineMarker);
+            cor_sel = 0;
             [x,y,marker] = ginput(1);
+            while cor_sel == 0             
+                if y>lower_y_bound(1,level_idx) && y<upper_y_bound(1,level_idx)
+                    cor_sel = 1;
+                else
+                    uiwait(warndlg(sprintf('Peak was selected at a different sound level. Please, replace peak selection at %d dB SPL',spl(level_idx)),'ERROR'));
+                    [x,y,marker] = ginput(1);
+                end
+            end
         elseif contains(answer_peak_cur,'Exit')
             exitwhile = 1;
         end
-    elseif replot_check == 1 && marker == 1
-        prompt_peak_old = sprintf('The %s%d peak has already been selected at %d dB SPL in a previous session. Would you like to replace peak selection?',type, id, spl(index));
+    elseif ~isempty(data.x(peak_idx,level_idx)) && replot_check == 1 && marker == 1
+        prompt_peak_old = sprintf('The %s%d peak has already been selected at %d dB SPL in a previous session. Would you like to replace peak selection?',type, id, spl(level_idx));
         answer_peak_old = questdlg(prompt_peak_old,'ERROR: Multiple Peak Selection', 'Replace Selection', 'Exit', 'I dont know');
-        if contains(answer_peak_old,'Replace Selection')
-            data.threshold = replot.abrs.thresholds(2);
-            data.z.score = replot.abrs.z.score(:,3);
-            data.z.intercept = replot.abrs.z.par(2);
-            data.z.slope = replot.abrs.z.par(3);
-            data.amp_thresh = replot.abrs.thresholds(3);
-            data.amp = flip(replot.abrs.amp(:,3))';
-            data.x = replot.abrs.x(:,3:end)';
-            data.y = replot.abrs.y(:,3:end)';
-            data.x(i,index) = NaN;
-            data.y(i,index) = NaN;
-            updated_data = data;
-            replot = [];
+        if contains(answer_peak_old,'Replace Selection')        
+            data.x(peak_idx,level_idx) = NaN;
+            data.y(peak_idx,level_idx) = NaN;
+            replot.abrs.x(level_idx,peak_idx+2) = NaN;
+            replot.abrs.y(level_idx,peak_idx+2) = NaN;
             exitwhile = 0;
             stop = 1;
             cla;
@@ -133,6 +137,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
 
 
 
+
     %declare pks
     pks2 = zeros(maxloops,maxpeaks);
     time_loc = zeros(maxtime,maxpeaks);
@@ -143,7 +148,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
             stop2 = 1;
             break;
         end
-        [yy, xx]=max(abr(bin_of_time(x-cutoff(count)):bin_of_time(x+cutoff(count)),index)); % max abr amplitude within peak selection
+        [yy, xx]=max(abr(bin_of_time(x-cutoff(count)):bin_of_time(x+cutoff(count)),level_idx)); % max abr amplitude within peak selection
         xxx=time_of_bin(xx)+time_of_bin(bin_of_time(x-cutoff(count)));  % time location of max abr within peak selection
         %Pop-up figure
         if (count == 1) %Only create figure once
@@ -158,8 +163,8 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
         bin_ptofInterest = ptofInterest + bin_time_cutoff1;
         start_pt = bin_time_cutoff1;
         end_pt = bin_time_cutoff2;
-        abr_1 = abr(:,index);
-        window = abr(bin_of_time(x-cutoff(count)):bin_of_time(x+cutoff(count)),index);
+        abr_1 = abr(:,level_idx);
+        window = abr(bin_of_time(x-cutoff(count)):bin_of_time(x+cutoff(count)),level_idx);
         bin_start(count)= find(abr_1 == window(1));
         bin_end(count)= find(abr_1 == window(end));
         confidence = 0.99;
@@ -469,15 +474,15 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
         if marker==1
 
             if invert == 1 %P
-                data.x(id*2-1,index)=x11;
-                data.y(id*2-1,index)=y11;
-                data.y_forfig(id*2-1,index)=y11+y_shift(1,index);
-                plot_yy = data.y_forfig(id*2-1,index);
+                data.x(id*2-1,level_idx)=x11;
+                data.y(id*2-1,level_idx)=y11;
+                data.y_forfig(id*2-1,level_idx)=y11+y_shift(1,level_idx);
+                plot_yy = data.y_forfig(id*2-1,level_idx);
             else %N
-                data.x(id*2,index)=x11;
-                data.y(id*2,index)=y11;
-                data.y_forfig(id*2,index)=y11+y_shift(1,index);
-                plot_yy = data.y_forfig(id*2,index);
+                data.x(id*2,level_idx)=x11;
+                data.y(id*2,level_idx)=y11;
+                data.y_forfig(id*2,level_idx)=y11+y_shift(1,level_idx);
+                plot_yy = data.y_forfig(id*2,level_idx);
             end
 
             if (type == 'w') && (id == 1)
@@ -509,7 +514,9 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
         end
     end
 end
-
+% Save current session data
+cur_data = data;
+cur_data.freq = freq;
 %Call plot data function and disable buttons
 stop=1;
 set(abr_FIG.push.peak1,'Value',0);
@@ -523,5 +530,9 @@ set(abr_FIG.push.trou4,'Value',0);
 set(abr_FIG.push.peak5,'Value',0);
 set(abr_FIG.push.trou5,'Value',0);
 %AR_marker = 0;
-plot_data2(stop,vertLineMarker)
+if ~isempty(replot) && replot_check == 1
+    replot.abrs.x(level_idx,peak_idx+2) = data.x(peak_idx,level_idx);
+    replot.abrs.y(level_idx,peak_idx+2) = data.y(peak_idx,level_idx);
+end
+plot_data2(stop,vertLineMarker);
 end

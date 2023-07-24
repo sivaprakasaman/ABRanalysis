@@ -86,16 +86,15 @@ str = FolderofInterest;
 %str = unique(str);
 
 %% User chooses folder from list
-%OLD CODE BELOW
-%d = dir(abr_data_dir);
-%d = d([d.isdir]==1 & strncmp('.',{d.name},1)==0); % Only directories which are not '.' nor '..'
-%str = {d.name};
+d = dir(abr_data_dir);
+d = d([d.isdir]==1 & strncmp('.',{d.name},1)==0); % Only directories which are not '.' nor '..'
+str = {d.name};
 [selection, ok] = listdlg('Name', 'File Manager', ...
     'PromptString',   'Select an Existing Data Directory:',...
     'SelectionMode',  'single',...
     'ListSize',       [300,300], ...
     'OKString',       'Re-Activate', ...
-    'CancelString',   'Create new Directory', ...
+    'CancelString',   'Exit', ...
     'InitialValue',    1, ...
     'ListString',      str);
 drawnow; %updates figures/graphics immediately
@@ -189,7 +188,9 @@ else
 end
 
 %% Go back to data directory to: 1) check for extra calibs, 2) do artifact correction
-cd(dataFolderpath)
+if exist(dataFolderpath,'dir')
+    cd (dataFolderpath)
+end
         
 %% Warn if more than one calib file, if so list pics (Commented out 10/5/21 due to missing findPics, will comment back later)
 calibPICs = dir('*calib*.m');
