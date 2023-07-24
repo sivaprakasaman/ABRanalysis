@@ -377,6 +377,8 @@ elseif strcmp(command_str,'edit') % added by GE 15Apr2004 %NEED THIS? -HG
 elseif strcmp(command_str,'close')
     save_file2_HG;
     data.save_chk = 1;
+    close;
+    waitbar(0,sprintf('\nExiting ABR Analysis\n\nGood Bye n.n'));
     closereq;
     cd(fileparts(abr_root_dir(1:end-1)));
     

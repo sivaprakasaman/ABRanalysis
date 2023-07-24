@@ -130,10 +130,6 @@ if ~isempty(filename)
         answer_peak_save = waitbar(0.5,prompt_peak_save);
         pause(.5);
         close;
-    else
-        waitbar(0,sprintf('\nExiting ABR Analysis\n\nGood Bye n.n'));
-        close;
-        return;
     end
 saved_prompt = sprintf('\nFiles Saved!\n\nFilename: %s\nFolder: %s',filename_out,currChinDir);
 saved_box = waitbar(1,saved_prompt); set(get(get(saved_box, 'CurrentAxes'), 'title'), 'Interpreter', 'none');
