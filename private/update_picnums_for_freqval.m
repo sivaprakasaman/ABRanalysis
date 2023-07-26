@@ -16,7 +16,7 @@ end
 if ~isempty(data)
     if isfield(data, 'save_chk')
         if (data.save_chk == 0) && (sum(sum(~isnan(data.x))) ~= 0)
-            ButtonName=questdlg('Would you like to save?');
+            ButtonName = questdlg('Would you like to save?');
             if strcmp(ButtonName,'Yes')
                 save_file2_HG;
             elseif strcmp(ButtonName,'Cancel') || strcmp(ButtonName,'No')

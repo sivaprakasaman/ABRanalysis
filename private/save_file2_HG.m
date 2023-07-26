@@ -1,7 +1,7 @@
 function save_file2
 
 global num freq spl animal date freq_level data abr ABRmag w hearingStatus abr_out_dir abr_Stimuli ...
-    AR_marker
+    AR_marker abr_time 
 today = datetime('now');
 today_date = datestr(today);
 today_date = today_date(1:11);
@@ -81,10 +81,16 @@ if ~isempty(filename)
             abrs.x = [abrs.x; freq2' spl' data.x'];
             abrs.y = [abrs.y; freq2' spl' data.y'];
             abrs.waves = [abrs.waves; freq2' spl' abr'];
-            
+            % Plotting structure
+            abrs.plot.waveforms = abrs.waves(:,3:end);
+            abrs.plot.waveforms_time = abr_time;
+            abrs.plot.peak_latency = abrs.x(:,3:end);
+            abrs.plot.peak_amplitude = abrs.y(:,3:end);
+            abrs.plot.levels = abrs.x(:,2);
+            abrs.plot.peaks = ["p1" "n1" "p2" "n2" "p3" "n3" "p4" "n4" "p5" "n5"];
+            abrs.plot.freq = abrs.x(1,1);
             %HG ADDED 2/11/20
             abrs.AR_marker = AR_marker;
-            
             save(filename2, 'abrs','-append'); clear abrs;
             filename_out = [filename2 '_' today_date];
         else
@@ -108,6 +114,14 @@ if ~isempty(filename)
         abrs.x = [freq2' spl' data.x'];
         abrs.y = [freq2' spl' data.y'];
         abrs.waves = [freq2' spl' abr'];
+        % Plotting structure
+        abrs.plot.waveforms = abrs.waves(:,3:end);
+        abrs.plot.waveforms_time = abr_time;
+        abrs.plot.peak_latency = abrs.x(:,3:end);
+        abrs.plot.peak_amplitude = abrs.y(:,3:end);
+        abrs.plot.levels = abrs.x(:,2);
+        abrs.plot.peaks = ["p1" "n1" "p2" "n2" "p3" "n3" "p4" "n4" "p5" "n5"];
+        abrs.plot.freq = abrs.x(1,1);
         file_check = dir(sprintf('*%s_v*.mat',filename2));
         [~,c] = size({file_check.name});
         if ~isempty(file_check)
@@ -123,7 +137,6 @@ if ~isempty(filename)
         elseif ~exist(strcat(filename2, '.mat'),'file')
             filename_out = [filename2 '_v1_' today_date];
             save(filename_out, 'abrs');
-            clear abrs;
         end
         %HG ADDED 2/11/20
         abrs.AR_marker = AR_marker;   
@@ -133,4 +146,5 @@ if ~isempty(filename)
     end
 saved_prompt = sprintf('\nFiles Saved!\n\nFilename: %s\nFolder: %s',filename_out,currChinDir);
 saved_box = waitbar(1,saved_prompt); set(get(get(saved_box, 'CurrentAxes'), 'title'), 'Interpreter', 'none');
+clear abrs;
 end

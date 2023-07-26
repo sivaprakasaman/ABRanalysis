@@ -7,8 +7,8 @@ function abr_analysis_HL(command_str,parm_num)
 %This function computes an ABR threshold based on series of AVERAGER files.
 
 global paramsIN abr_FIG abr_Stimuli abr_root_dir abr_data_dir hearingStatus animal data ...
-    han invert abr_out_dir freq date dataFolderpath viewraw temp_view cur_data q_fldr check_files
-
+    han invert abr_out_dir freq date dataFolderpath viewraw temp_view cur_data q_fldr check_files ...
+    replot_check
 disp('in abr_analysis_HL.m')
 
 % abr_root_dir, abr_data_dir, abr_out_dir must be set in abr_setup, and
@@ -163,6 +163,7 @@ elseif strcmp(command_str,'directory')
     end
     
 elseif strcmp(command_str,'peaks')
+    clear global 'replot'
     replot_data;
     set(han.peak_panel,'Box','on');
     set(abr_FIG.handle, 'CurrentObject', abr_FIG.push.edit);
@@ -170,7 +171,6 @@ elseif strcmp(command_str,'peaks')
     
 elseif strcmp(command_str,'process')
     clear global 'replot'
-    updated_data = [];
     update_picnums_for_freqval(freq/1000) %animal,hearingStatus);
     zzz2;
     set(han.peak_panel,'Box','on');
@@ -374,15 +374,27 @@ elseif strcmp(command_str,'file')
     
 elseif strcmp(command_str,'edit') % added by GE 15Apr2004 %NEED THIS? -HG
     
-elseif strcmp(command_str,'close') %NEED THIS? -HG
-    update_params3;
+elseif strcmp(command_str,'close')
+    close_msg = questdlg('Would you like to exit ABR analysis?',...
+        'Exiting ABR Analysis', 'Exit', 'Cancel');
+    answer = {close_msg};
+    if contains(answer, 'Exit')
+        close_saving = questdlg('Would you like to save current file before exiting ABR analysis?',...
+        'Exiting ABR Analysis', 'Yes', 'No');
+        answer2 = {close_saving};
+        if contains(answer2,'Yes')
+    end
+        save_file2_HG;
+        data.save_chk = 1;
+    close;
+    waitbar(0,sprintf('\nExiting ABR Analysis\n\nGood Bye n.n'));
     closereq;
     cd(fileparts(abr_root_dir(1:end-1)));
     
 elseif strcmp(command_str,'freq_proc500')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
-    replot_data;
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
     set(abr_FIG.push.freq4k,'Value',0);
@@ -390,6 +402,7 @@ elseif strcmp(command_str,'freq_proc500')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc1k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq500,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -398,6 +411,7 @@ elseif strcmp(command_str,'freq_proc1k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc2k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq500,'Value',0);
@@ -406,6 +420,7 @@ elseif strcmp(command_str,'freq_proc2k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc4k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -414,6 +429,7 @@ elseif strcmp(command_str,'freq_proc4k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_proc8k')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);
@@ -422,6 +438,7 @@ elseif strcmp(command_str,'freq_proc8k')
     set(abr_FIG.push.freqClick,'Value',0);
 elseif strcmp(command_str,'freq_procClick')
     clear global 'replot';
+    set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);
     update_picnums_for_freqval(parm_num) %animal,hearingStatus);
     set(abr_FIG.push.freq1k,'Value',0);
     set(abr_FIG.push.freq2k,'Value',0);

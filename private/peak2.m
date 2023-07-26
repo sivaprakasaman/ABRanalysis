@@ -12,10 +12,6 @@ level_idx peak_idx exitwhile
 
 warning off;
 
-%Keep track of past peaks picked
-%Peaks = [P1 N1 P2 N2 P3 N3 P4 N4 P5 N5];
-%pastPeaks = [0 0 0 0 0 0 0 0 0 0];
-
 %Initializes marker
 vertLineMarker = 0;
 
@@ -42,7 +38,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     maxpeaks = 30; %correlates to pks
     maxtime = 30;
 
-    if (type == 'w')
+    if (type == 'p')
         invert = 1;
     else %type N
         invert = -1;
@@ -56,6 +52,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     %Marker=3 if right mouse button pressed
     %Plot points
     ax = gca;
+    exit_msg = text(0.5,0.97,'Right-click to Exit Peak Selection Mode','Color','r','FontSize',14,'horizontalalignment','left','VerticalAlignment','middle');
     %Find dB SPL plot - HG added
     for i=1:num
         if y>lower_y_bound(1,i) && y<upper_y_bound(1,i)
@@ -65,7 +62,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
 
 
     % Check peaks selected in selected peak file
-    if type == 'w'
+    if type == 'p'
         peak_idx = id*2-1;
     end
     if type == 'n'
@@ -134,6 +131,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     elseif marker ~=1
         exitwhile = 1;
         stop2 = 1;
+        delete(exit_msg);
     end
 
 
@@ -485,7 +483,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
                 plot_yy = data.y_forfig(id*2,level_idx);
             end
 
-            if (type == 'w') && (id == 1)
+            if (type == 'p') && (id == 1)
                 if ((nnz(~isnan(data.x))) >= 3)
                     %Basis is average of P1 for top 3 levels
                     kk = ~isnan(data.x);

@@ -53,19 +53,20 @@ set(han.lat_panel,'Box','on','XLim',xlimits,'XGrid','on','YGrid','on');
 
 %NOTE: Only plotting based off of P1&P5; N1&N5 do not affect latency
 %panel
+%Removed delay = 6.635 ms
 if isempty(reff)
     plot(han.lat_panel,...%%% -6.635 is correction for delay of TDT/ER2
-        spl,data.x(1,:)-6.635,'-r*',spl,data.x(3,:)-6.635,'-b*',...
-        spl,data.x(5,:)-6.635,'-m*',spl,data.x(7,:)-6.635,'-g*',spl,data.x(9,:)-6.635,'-c*','LineWidth',line_width)
+        spl,data.x(1,:),'-r*',spl,data.x(3,:),'-b*',...
+        spl,data.x(5,:),'-m*',spl,data.x(7,:),'-g*',spl,data.x(9,:),'-c*','LineWidth',line_width)
 else
     plot(han.lat_panel,...%%% -6.635 is correction for delay of TDT/ER2
-        spl,data.x(1,:)-6.635,'-r*',spl,data.x(3,:)-6.635,'-b*',...
-        spl,data.x(5,:)-6.635,'-m*',spl,data.x(7,:)-6.635,'-k*',spl,data.x(9,:)-6.635,'-c*',...
-        reff.abrs.x(:,2),reff.abrs.x(:,3)-6.635,':r.',...
-        reff.abrs.x(:,2),reff.abrs.x(:,5)-6.635,':b.',...
-        reff.abrs.x(:,2),reff.abrs.x(:,7)-6.635,':m.',...
-        reff.abrs.x(:,2),reff.abrs.x(:,9)-6.635,':k.',...
-        reff.abrs.x(:,2),reff.abrs.x(:,11)-6.635,':c.','LineWidth',line_width)
+        spl,data.x(1,:),'-r*',spl,data.x(3,:),'-b*',...
+        spl,data.x(5,:),'-m*',spl,data.x(7,:),'-k*',spl,data.x(9,:),'-c*',...
+        reff.abrs.x(:,2),reff.abrs.x(:,3),':r.',...
+        reff.abrs.x(:,2),reff.abrs.x(:,5),':b.',...
+        reff.abrs.x(:,2),reff.abrs.x(:,7),':m.',...
+        reff.abrs.x(:,2),reff.abrs.x(:,9),':k.',...
+        reff.abrs.x(:,2),reff.abrs.x(:,11),':c.','LineWidth',line_width)
 end
 
 %% zscore panel
@@ -149,12 +150,12 @@ boundary_right = find(abr_time == interp1(abr_time,abr_time,abr_Stimuli.end_temp
 bounded_abr = abr(boundary_left:boundary_right,1) + y_shift(1);
 upper_bound = max(bounded_abr) + 0.01*max(bounded_abr);
 lower_bound = min(bounded_abr) - 0.01*min(bounded_abr);
+cla;
 if temp_view == 1
     plot([abr_Stimuli.start_template abr_Stimuli.start_template abr_Stimuli.end_template abr_Stimuli.end_template...
         abr_Stimuli.start_template],[upper_bound lower_bound lower_bound...
         upper_bound upper_bound],'-r','LineWidth',line_width)
 end
-
 
 for i=1:num
     plot(abr_time,abr(:,i)+y_shift(1,i),'-k',[abr_Stimuli.start abr_Stimuli.end],[upper_y_bound(1,i) upper_y_bound(1,i)],'-k',...
@@ -169,7 +170,7 @@ for i=1:num
             colorPT = strcat(colors2{j},'*');
             plot(ax, reX, reY, colorPT,'LineWidth',1);
              if (mod(j,2)==1) %PEAK - place above peak
-                name = strcat('w',num2str((j+1)/2)); 
+                name = strcat('p',num2str((j+1)/2)); 
                 text(ax,reX,reY+0.05,name,'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',10,'Color',colors2{j});
              else %TROUGH
                 name = strcat('n',num2str((j)/2)); 
@@ -183,7 +184,7 @@ for i=1:num
             colorPT = strcat(colors2{j},'*');
             plot(ax, reX, reY, colorPT,'LineWidth',1);
             if (mod(j,2)==1) %PEAK - place above peak
-                name = strcat('w',num2str((j+1)/2));
+                name = strcat('p',num2str((j+1)/2));
                 text(ax,reX,reY+0.05,name,'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',10,'Color',colors2{j});
             else %TROUGH
                 name = strcat('n',num2str((j)/2));
