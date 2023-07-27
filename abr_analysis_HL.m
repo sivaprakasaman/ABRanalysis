@@ -388,11 +388,21 @@ elseif strcmp(command_str,'close')
             pause(3);
             close;
         end
-    msgbox(sprintf('\n     Exiting ABR Analysis\n\n          Good Bye n.n\n'));
-    closereq;
-    data.save_chk = 1;
-    cd(fileparts(abr_root_dir(1:end-1)));
-    end
+        exit_msg = sprintf('\nExiting ABR Analysis\n');
+        waitbar(0,exit_msg);
+        pause(0.5);
+        waitbar(0.33,exit_msg);
+        pause(0.5);
+        waitbar(0.66,exit_msg);
+        pause(0.5);
+        closereq;
+        close all;
+        data.save_chk = 1;
+        cd(fileparts(abr_root_dir(1:end-1)));
+        exit_msg = sprintf('\nGood Bye n.n\n');
+        waitbar(1,exit_msg);
+        pause(1); close;
+    end     
 elseif strcmp(command_str,'freq_proc500')
     clear global 'replot';
     set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);

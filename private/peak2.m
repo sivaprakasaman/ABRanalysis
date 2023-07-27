@@ -52,14 +52,17 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     %Marker=3 if right mouse button pressed
     %Plot points
     ax = gca;
-    exit_msg = text(0.5,0.97,'Right-click to Exit Peak Selection Mode','Color','r','FontSize',14,'horizontalalignment','left','VerticalAlignment','middle');
+    if marker == 1
+        axes('Position',[0 0 1 1]); 
+        axis off;
+        exit_msg = text(0.75,0.97,'Right-click to Exit Peak Selection Mode','Color','r','FontSize',14,'horizontalalignment','right','VerticalAlignment','middle');
+    end
     %Find dB SPL plot - HG added
     for i=1:num
         if y>lower_y_bound(1,i) && y<upper_y_bound(1,i)
             level_idx = i;
         end
     end
-
 
     % Check peaks selected in selected peak file
     if type == 'p'
@@ -467,7 +470,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
             warndlg('Potential problem with code.');
         end
     end
-
+axes(ax);
     if stop2 == 0
         if marker==1
 
