@@ -20,8 +20,8 @@ end
 %clear out contents of all axes
 %HG ADDED 12/2/19 -- to keep points of peaks
 if (stop ~= 1)
-    set([han.abr_panel han.amp_panel han.lat_panel han.z_panel han.peak_panel],'NextPlot','replacechildren')
-    plot(han.abr_panel,0,0,'-w'); plot(han.amp_panel,0,0,'-w'); plot(han.lat_panel,0,0,'-w');
+    set([han.abr_panel han.amp_panel han.lat_panel han.z_panel han.peak_panel han.peak_amp_panel],'NextPlot','replacechildren')
+    plot(han.abr_panel,0,0,'-w'); plot(han.amp_panel,0,0,'-w'); plot(han.lat_panel,0,0,'-w'); plot(han.peak_amp_panel,0,0,'-w')
     plot(han.z_panel,0,0,'-w'); plot(han.peak_panel,0,0,'-w');
 else
     cla(han.z_panel) %Replots z-panel after modifying weights
@@ -46,18 +46,22 @@ text(data.x(10,:),data.y_forfig(10,:),'----','FontSize',10,'Color','c','horizont
 
 
 
-%% latency panel
+%% latency and peak amplitude panel
 %ylimits = [0.8 7];
 xlimits = [min(spl)-10 max(spl)+10];
 set(han.lat_panel,'Box','on','XLim',xlimits,'XGrid','on','YGrid','on');
+set(han.peak_amp_panel,'Box','on','XLim',xlimits,'XGrid','on','YGrid','on');
 
-%NOTE: Only plotting based off of P1&P5; N1&N5 do not affect latency
+%NOTE: Only plotting based off of P1-P5, N1-N5 do not affect latency
 %panel
 %Removed delay = 6.635 ms
 if isempty(reff)
     plot(han.lat_panel,...%%% -6.635 is correction for delay of TDT/ER2
         spl,data.x(1,:),'-r*',spl,data.x(3,:),'-b*',...
         spl,data.x(5,:),'-m*',spl,data.x(7,:),'-g*',spl,data.x(9,:),'-c*','LineWidth',line_width)
+    plot(han.peak_amp_panel,...
+        spl,data.y(1,:),'-r*',spl,data.y(3,:),'-b*',...
+        spl,data.y(5,:),'-m*',spl,data.y(7,:),'-g*',spl,data.y(9,:),'-c*','LineWidth',line_width)
 else
     plot(han.lat_panel,...%%% -6.635 is correction for delay of TDT/ER2
         spl,data.x(1,:),'-r*',spl,data.x(3,:),'-b*',...
@@ -67,6 +71,14 @@ else
         reff.abrs.x(:,2),reff.abrs.x(:,7),':m.',...
         reff.abrs.x(:,2),reff.abrs.x(:,9),':k.',...
         reff.abrs.x(:,2),reff.abrs.x(:,11),':c.','LineWidth',line_width)
+    plot(han.peak_amp_panel,...
+        spl,data.y(1,:),'-r*',spl,data.y(3,:),'-b*',...
+        spl,data.y(5,:),'-m*',spl,data.y(7,:),'-k*',spl,data.y(9,:),'-c*',...
+        reff.abrs.y(:,2),reff.abrs.y(:,3),':r.',...
+        reff.abrs.y(:,2),reff.abrs.y(:,5),':b.',...
+        reff.abrs.y(:,2),reff.abrs.y(:,7),':m.',...
+        reff.abrs.y(:,2),reff.abrs.y(:,9),':k.',...
+        reff.abrs.y(:,2),reff.abrs.y(:,11),':c.','LineWidth',line_width)
 end
 
 %% zscore panel

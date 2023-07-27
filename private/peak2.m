@@ -14,11 +14,9 @@ warning off;
 
 %Initializes marker
 vertLineMarker = 0;
-
+count_msg = 1;
 x=abr_Stimuli.start;
 while x >= abr_Stimuli.start && x <= abr_Stimuli.end
-
-
 
     %Set initial cutoff
     cutoff = 0.15;
@@ -53,9 +51,16 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     %Plot points
     ax = gca;
     if marker == 1
-        axes('Position',[0 0 1 1]); 
+        msg_check = 1;
+    elseif marker ~= 1
+        msg_check = 0;
+    end
+    
+    if msg_check == 1 && count_msg == 1
+        exit_ax = axes('Position',[0 0 1 1]);
         axis off;
         exit_msg = text(0.75,0.97,'Right-click to Exit Peak Selection Mode','Color','r','FontSize',14,'horizontalalignment','right','VerticalAlignment','middle');
+        count_msg = 2;
     end
     %Find dB SPL plot - HG added
     for i=1:num
@@ -134,7 +139,7 @@ while x >= abr_Stimuli.start && x <= abr_Stimuli.end
     elseif marker ~=1
         exitwhile = 1;
         stop2 = 1;
-        delete(exit_msg);
+        delete(exit_ax);
     end
 
 

@@ -163,11 +163,16 @@ axes('Position',[0.06 0.71 0.17 0.22]);
 han.z_panel=gca;
 ylabel('Z score','FontSize',12)
 
-axes('Position',[0.275 0.44 0.17 0.49]); 
+axes('Position',[0.275 0.44 0.17 0.22]); 
 han.lat_panel=gca;
 ylabel('Latency (ms)','FontSize',12)
+
+axes('Position',[0.275 0.71 0.17 0.22]); 
+han.peak_amp_panel=gca;
+ylabel('Amplitude (\muV)','FontSize',12)
 
 axes('Position',[0 0 1 1]); han.text_panel=gca; 
 axis(han.text_panel,'off',[0 1 0 1]);
 
 drawnow;
+abr_FIG.handle.WindowState = 'maximized';
