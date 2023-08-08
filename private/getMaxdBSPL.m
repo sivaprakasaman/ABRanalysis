@@ -1,6 +1,5 @@
 function [calibMaxdBSPL, isClick] = getMaxdBSPL(calibpicnumstr,freq)
  %Written by AS to use desired calib file
-
     CalibFile  = sprintf('p%04d_calib', calibpicnumstr);
     searchstr = [CalibFile,'*'];
     CalibFile = {dir(fullfile(cd,searchstr)).name};
@@ -9,7 +8,8 @@ function [calibMaxdBSPL, isClick] = getMaxdBSPL(calibpicnumstr,freq)
     command_line = sprintf('%s%s%c','[xcal]=',CalibFile(1:end-2),';');
     eval(command_line);
     
-    CalibData = xcal.CalibData(:,1:2);
+    CalibData = xcal.CalibData2(:,1:2);
+    disp('Using RIGHT-speaker calibration for now. Adjust for new NEL!');
     CalibData(:,2)=trifilt(CalibData(:,2)',5)';
 
     %if is nan, then assume click calibration
