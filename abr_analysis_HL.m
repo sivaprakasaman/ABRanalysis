@@ -29,6 +29,7 @@ if nargin < 1
     
     abr_gui_initiate; %% Makes the GUI visible
     temp_view = get(han.temp,'Value'); % should become equal to 1
+    uiwait(warndlg(sprintf('\nLeft-click: Select Peak\nRight-click: Exit Selection Mode\n'),'Peak Instructions','modal'));
     cur_data = [];
 
     abr_Stimuli.dir = get_directory;
@@ -236,7 +237,7 @@ elseif strcmp(command_str,'change_weights')
     
 elseif strcmp(command_str,'peak1')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('w',1);
+        peak2('p',1);
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -252,7 +253,7 @@ elseif strcmp(command_str,'trou1')
     
 elseif strcmp(command_str,'peak2')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('w',2)
+        peak2('p',2)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -268,7 +269,7 @@ elseif strcmp(command_str,'trou2')
     
 elseif strcmp(command_str,'peak3')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('w',3)
+        peak2('p',3)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -284,7 +285,7 @@ elseif strcmp(command_str,'trou3')
     
 elseif strcmp(command_str,'peak4')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('w',4)
+        peak2('p',4)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -300,7 +301,7 @@ elseif strcmp(command_str,'trou4')
     
 elseif strcmp(command_str,'peak5')
     if strcmp(get(han.peak_panel,'Box'),'on')
-        peak2('w',5)
+        peak2('p',5)
     else
         msgbox('Select Frequency of Interest Before Marking Peaks')
     end
@@ -375,13 +376,33 @@ elseif strcmp(command_str,'file')
 elseif strcmp(command_str,'edit') % added by GE 15Apr2004 %NEED THIS? -HG
     
 elseif strcmp(command_str,'close')
-    save_file2_HG;
-    data.save_chk = 1;
-    close;
-    waitbar(0,sprintf('\nExiting ABR Analysis\n\nGood Bye n.n'));
-    closereq;
-    cd(fileparts(abr_root_dir(1:end-1)));
-    
+    close_msg = questdlg('Would you like to exit ABR analysis?',...
+        'Exiting ABR Analysis', 'Exit', 'Cancel','I dont know');
+    answer = {close_msg};
+    if contains(answer, 'Exit')
+        close_saving = questdlg('Would you like to save current file before exiting ABR analysis?',...
+        'Exiting ABR Analysis', 'Yes', 'No','I dont know');
+        answer2 = {close_saving};
+        if contains(answer2,'Yes')
+            save_file2_HG;
+            pause(3);
+            close;
+        end
+        exit_msg = sprintf('\nExiting ABR Analysis\n');
+        waitbar(0,exit_msg);
+        pause(0.5);
+        waitbar(0.33,exit_msg);
+        pause(0.5);
+        waitbar(0.66,exit_msg);
+        pause(0.5);
+        closereq;
+        close all;
+        data.save_chk = 1;
+        cd(fileparts(abr_root_dir(1:end-1)));
+        exit_msg = sprintf('\nGood Bye n.n\n');
+        waitbar(1,exit_msg);
+        pause(1); close;
+    end     
 elseif strcmp(command_str,'freq_proc500')
     clear global 'replot';
     set(abr_FIG.parm_txt(9),'string','','Color',[0.4660 0.6740 0.1880]);

@@ -11,7 +11,12 @@ q_fldr = strcat('Q', num2str(animal));
 % end
 ChinDir = [abr_out_dir,'/', q_fldr];
 
-cd(ChinDir)
+if isdir(ChinDir)
+    cd(ChinDir)
+else
+    mkdir(ChinDir);
+    cd(ChinDir)
+end
 files = dir(fullfile(ChinDir, sprintf('*%d*.mat',freq)));
 files = files(find((strncmp('.',{files.name},1)==0))); % Only files which are not '.' nor '..'
 str = {files.name};

@@ -4,24 +4,23 @@ global abr_FIG abr_Stimuli abr_data_dir data han animal hearingStatus dataFolder
 
 %% Check if checkbox is already dim
 if dimcheck == 1
-   set(han.viewraw,'Enable','off');
+    set(han.viewraw,'Enable','off');
 else
     %Reset checkbox to unchecked when loading new frequency set
     viewraw = 0;
     set(han.viewraw,'Enable','on');
-    set(han.viewraw,'Value',0);  
+    set(han.viewraw,'Value',0);
 end
 
 %% Checks to see if user wants to save before clearing data
 if ~isempty(data)
     if isfield(data, 'save_chk')
         if (data.save_chk == 0) && (sum(sum(~isnan(data.x))) ~= 0)
-            ButtonName=questdlg('Would you like to save?');
+            ButtonName = questdlg('Would you like to save?');
             if strcmp(ButtonName,'Yes')
                 save_file2_HG;
             elseif strcmp(ButtonName,'Cancel') || strcmp(ButtonName,'No')
                 replot_check = 3;
-                return;
             end
         else
             data.save_chk = 0;
@@ -57,8 +56,8 @@ ABRpics=nan(1,length(allfiles));
 
 for i=1:length(allfiles)
     filename=allfiles(i).name;
-%     eval(['run(''' filename ''');']);
-%     eval('x=ans;')
+    %     eval(['run(''' filename ''');']);
+    %     eval('x=ans;')
     load(filename,'x');
     if ~isfield(x.Stimuli,'MaxdBSPLCalib')
         allcalfiles=dir('p*calib*');
