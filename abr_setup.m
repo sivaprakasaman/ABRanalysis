@@ -6,8 +6,8 @@ addpath(genpath(pwd)) %ENTER the path of the directory containing your 'ABRAnaly
 rmpath(genpath('Trash'));
 
 %linux
-addpath(genpath('/media/asivapr/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/')) %ENTER the path of the directory containing your project folder
-project_DIR='/media/asivapr/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/Baseline/'; %ENTER the path of your project folder
+addpath(genpath('/media/sivaprakasaman/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/')) %ENTER the path of the directory containing your project folder
+project_DIR='/media/sivaprakasaman/AndrewNVME/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/Baseline/'; %ENTER the path of your project folder
 
 % %windows
 % addpath(genpath('A:/Pitch_Study/Pitch_Diagnostics_SH_AS/ABR/Chin/')) %ENTER the path of the directory containing your project folder

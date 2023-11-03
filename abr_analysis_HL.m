@@ -67,7 +67,7 @@ if nargin < 1
 elseif strcmp(command_str,'stimulus')
     switch parm_num
         case 1
-            calibPICs = dir('*calib_raw*.m');
+            calibPICs = dir('*calib*.m');
             beep
             fn = {calibPICs.name};
             [calib_idx,ok] = listdlg('Name', 'Calibration File Manager', ...

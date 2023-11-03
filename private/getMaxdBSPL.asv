@@ -11,7 +11,7 @@ function [calibMaxdBSPL, isClick] = getMaxdBSPL(calibpicnumstr,freq)
     disp('Using RIGHT-speaker calibration for now. Adjust for new NEL!');
     
     %AS - being more precise with finding right calib file
-    if strcmp(xcal.ear_ord{1},'Right ')
+    if strcmp(xcal.ear_ord{1}=='Right '
         CalibData = xcal.CalibData(:,1:2);
     else
         CalibData = xcal.CalibData2(:,1:2);
