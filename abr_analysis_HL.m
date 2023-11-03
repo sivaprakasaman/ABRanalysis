@@ -74,7 +74,7 @@ elseif strcmp(command_str,'stimulus')
             'PromptString',{'Please, select one calibration file to use.',''},...
             'ListSize',       [300,300], ...
             'SelectionMode','single','ListString',fn);
-            abr_Stimuli.cal_pic = calib_idx;
+            abr_Stimuli.cal_pic = sscanf(fn{calib_idx},'p%d_');
             set(abr_FIG.parm_txt(1),'string',calibPICs(calib_idx).name,'Interpreter','none');
             update_picnums_for_freqval(freq/1000);
         case 3
